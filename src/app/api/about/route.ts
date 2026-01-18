@@ -9,15 +9,12 @@ function getJsonPath() {
 
 export async function GET(req: NextRequest) {
   const jsonPath = getJsonPath();
-  let data = {
-    description: "Write about yourself here.",
-    textColor: "#23272f"
-  };
   if (fs.existsSync(jsonPath)) {
     const file = fs.readFileSync(jsonPath, "utf-8");
-    data = JSON.parse(file);
+    const data = JSON.parse(file);
+    return NextResponse.json(data);
   }
-  return NextResponse.json(data);
+  return NextResponse.json({});
 }
 
 export async function POST(req: NextRequest) {
