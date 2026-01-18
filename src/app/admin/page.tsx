@@ -23,12 +23,18 @@ interface Project {
   title: string;
   description: string;
   link: string;
+  image?: string;
+  imageFile?: File;
+  imagePreview?: string;
 }
 
 interface Blog {
   title: string;
   url: string;
   description?: string;
+  image?: string;
+  imageFile?: File;
+  imagePreview?: string;
 }
 
 interface Contact {
@@ -110,7 +116,16 @@ export default function AdminPage() {
   const [error, setError] = useState("");
   const [data, setDataState] = useState<PortfolioData | null>(null);
   const [edit, setEdit] = useState<{ [key: string]: boolean }>({});
-  const [tempData, setTempData] = useState<PortfolioData | null>(null);
+  const [tempData, setTempData] = useState<PortfolioData>({
+  home: { greeting: "", name: "", intro: "", textColor: "" },
+  about: { description: "", textColor: "" },
+  skills: [],
+  experience: [],
+  projects: [],
+  blogs: [],
+  publications: [],
+  contact: { email: "", phone: "", linkedin: "", github: "", textColor: "" }
+});
 
   // Helper to safely get section data
   function getSection<T>(section: keyof PortfolioData): T {
@@ -124,28 +139,28 @@ export default function AdminPage() {
     if (!data) return;
     setTempData({
       ...data,
-      home: data.home || { greeting: "", name: "", intro: "", textColor: "" },
+      home: data.home,
       about: { ...(data.about ?? { description: "", textColor: "" }) },
-      skills: Array.isArray(data.skills) ? data.skills : [],
-      experience: Array.isArray(data.experience) ? data.experience : [],
-      projects: Array.isArray(data.projects) ? data.projects : [],
-      blogs: Array.isArray(data.blogs) ? data.blogs : [],
-      publications: Array.isArray(data.publications) ? data.publications : [],
-      contact: data.contact || { email: "", phone: "", linkedin: "", github: "", textColor: "" }
+      skills: data.skills,
+      experience: data.experience,
+      projects: data.projects,
+      blogs: data.blogs,
+      publications: data.publications,
+      contact: data.contact
     });
   };
   const handleAboutReset = () => {
     if (!data) return;
     setTempData({
       ...data,
-      home: data.home || { greeting: "", name: "", intro: "", textColor: "" },
+      home: data.home,
       about: { ...(data.about ?? { description: "", textColor: "" }) },
-      skills: Array.isArray(data.skills) ? data.skills : [],
-      experience: Array.isArray(data.experience) ? data.experience : [],
-      projects: Array.isArray(data.projects) ? data.projects : [],
-      blogs: Array.isArray(data.blogs) ? data.blogs : [],
-      publications: Array.isArray(data.publications) ? data.publications : [],
-      contact: data.contact || { email: "", phone: "", linkedin: "", github: "", textColor: "" }
+      skills: data.skills,
+      experience: data.experience,
+      projects: data.projects,
+      blogs: data.blogs,
+      publications: data.publications,
+      contact: data.contact
     });
   };
 
@@ -187,7 +202,6 @@ export default function AdminPage() {
         setTempData(loaded);
       } else {
         setDataState(null);
-        setTempData(null);
       }
     }
     fetchAllData();
@@ -225,7 +239,29 @@ export default function AdminPage() {
   const handleSave = async (section: string) => {
     if (!data || !tempData) return;
     const newData = { ...data, [section]: { ...(tempData[section] ?? {}) } };
-    setDataState(newData);
+    if (!tempData) return;
+if (!tempData) return;
+if (!tempData) return;
+if (!tempData) return;
+if (!tempData) return;
+if (!tempData.home) tempData.home = { greeting: "", name: "", intro: "", textColor: "" };
+if (!tempData.about) tempData.about = { description: "", textColor: "" };
+if (!tempData.skills) tempData.skills = [];
+if (!tempData.experience) tempData.experience = [];
+if (!tempData.projects) tempData.projects = [];
+if (!tempData.blogs) tempData.blogs = [];
+if (!tempData.publications) tempData.publications = [];
+if (!tempData.contact) tempData.contact = { email: "", phone: "", linkedin: "", github: "", textColor: "" };
+setDataState({
+  home: tempData.home,
+  about: tempData.about,
+  skills: tempData.skills,
+  experience: tempData.experience,
+  projects: tempData.projects,
+  blogs: tempData.blogs,
+  publications: tempData.publications,
+  contact: tempData.contact
+});
     setEdit({ ...edit, [section]: false });
 
     // Sync to backend API for about, home, etc.
@@ -286,7 +322,8 @@ export default function AdminPage() {
       body: JSON.stringify(tempData.skills),
     });
   };
-  const handleSkillChange = (idx: number, field: string, value: string) => {
+const handleSkillChange = (idx: number, field: string, value: string) => {
+    if (!tempData) return;
     const updated = tempData.skills.map((s: any, i: number) =>
       i === idx ? { ...s, [field]: value } : s
     );
@@ -347,6 +384,7 @@ export default function AdminPage() {
     });
   };
   const handleProjectChange = (idx: number, field: string, value: string) => {
+    if (!tempData) return;
     const updated = tempData.projects.map((p: any, i: number) =>
       i === idx ? { ...p, [field]: value } : p
     );
@@ -374,11 +412,31 @@ export default function AdminPage() {
   const handleBlogsCancel = () => {
     setEdit({ ...edit, blogs: false });
     if (!data) return;
-    setTempData({ ...data, blogs: [...(data.blogs ?? [])] });
+    setTempData({
+      ...data,
+      blogs: [...(data.blogs ?? [])],
+      home: data.home,
+      about: data.about,
+      skills: data.skills,
+      experience: data.experience,
+      projects: data.projects,
+      publications: data.publications,
+      contact: data.contact
+    });
   };
   const handleBlogsReset = () => {
     if (!data) return;
-    setTempData({ ...data, blogs: [...(data.blogs ?? [])] });
+    setTempData({
+      ...data,
+      blogs: [...(data.blogs ?? [])],
+      home: data.home,
+      about: data.about,
+      skills: data.skills,
+      experience: data.experience,
+      projects: data.projects,
+      publications: data.publications,
+      contact: data.contact
+    });
   };
   const handleBlogsSave = async () => {
     if (!data || !tempData) return;
@@ -402,6 +460,7 @@ export default function AdminPage() {
     });
   };
   const handleBlogChange = (idx: number, field: string, value: string) => {
+    if (!tempData) return;
     const updated = tempData.blogs.map((b: any, i: number) =>
       i === idx ? { ...b, [field]: value } : b
     );
@@ -424,7 +483,18 @@ export default function AdminPage() {
 
   // For contact
   const handleContactChange = (field: string, value: string) => {
-    setTempData({...tempData,contact: { ...tempData.contact, [field]: value }});
+    if (!tempData) return;
+    setTempData({
+      ...tempData,
+      contact: { ...tempData.contact, [field]: value },
+      home: tempData.home,
+      about: tempData.about,
+      skills: tempData.skills,
+      experience: tempData.experience,
+      projects: tempData.projects,
+      blogs: tempData.blogs,
+      publications: tempData.publications
+    });
   };
 
   // Resume upload handler
@@ -475,6 +545,10 @@ export default function AdminPage() {
   // Modal handlers for Blogs
   const openBlogModal = (idx: number) => {
     setExpandedBlog(idx);
+    if (!tempData || !tempData.blogs) {
+      setBlogModalValue("");
+      return;
+    }
     setBlogModalValue(tempData.blogs[idx]?.description || "");
   };
   const closeBlogModal = () => {
@@ -482,6 +556,7 @@ export default function AdminPage() {
     setBlogModalValue("");
   };
   const saveBlogModal = (idx: number) => {
+    if (!tempData || !tempData.blogs) return;
     const updated = tempData.blogs.map((x: any, i: number) =>
       i === idx ? { ...x, description: blogModalValue } : x
     );
@@ -695,9 +770,9 @@ export default function AdminPage() {
                   <label className="block mb-1 font-semibold">Description</label>
                   <textarea
                     className="w-full p-2 rounded mb-2 bg-gray-100 border"
-                    value={tempData.about.description}
+                    value={tempData && tempData.about ? tempData.about.description : ""}
                     onChange={(e) =>
-                      setTempData({
+                      tempData && tempData.about && setTempData({
                         ...tempData,
                         about: { ...tempData.about, description: e.target.value }
                       })
@@ -796,7 +871,25 @@ export default function AdminPage() {
                   }}>Add Experience</button>
                   <div className="flex gap-2 mt-2">
                     <button className="bg-green-600 px-4 py-1 rounded text-white hover:bg-green-700" onClick={async () => {
-                      setDataState({ ...data, experience: [...tempData.experience] });
+                      if (!tempData) return;
+if (!tempData.home) tempData.home = { greeting: "", name: "", intro: "", textColor: "" };
+if (!tempData.about) tempData.about = { description: "", textColor: "" };
+if (!tempData.skills) tempData.skills = [];
+if (!tempData.experience) tempData.experience = [];
+if (!tempData.projects) tempData.projects = [];
+if (!tempData.blogs) tempData.blogs = [];
+if (!tempData.publications) tempData.publications = [];
+if (!tempData.contact) tempData.contact = { email: "", phone: "", linkedin: "", github: "", textColor: "" };
+setDataState({
+  home: tempData.home,
+  about: tempData.about,
+  skills: tempData.skills,
+  experience: tempData.experience,
+  projects: tempData.projects,
+  blogs: tempData.blogs,
+  publications: tempData.publications,
+  contact: tempData.contact
+});
                       setEdit({ ...edit, experience: false });
                       await fetch("/api/experience", {
                         method: "POST",
@@ -805,11 +898,31 @@ export default function AdminPage() {
                       });
                     }}>Save</button>
                     <button className="bg-gray-600 px-4 py-1 rounded text-white hover:bg-gray-700" onClick={() => {
-                      setEdit({ ...edit, experience: false });
-                      setTempData({ ...tempData, experience: [...data.experience] });
+setEdit({ ...edit, experience: false });
+                      setTempData({
+                        ...tempData,
+                        experience: [...data.experience],
+                        home: tempData.home,
+                        about: tempData.about,
+                        skills: tempData.skills,
+                        projects: tempData.projects,
+                        blogs: tempData.blogs,
+                        publications: tempData.publications,
+                        contact: tempData.contact
+                      });
                     }}>Cancel</button>
                     <button className="bg-red-600 px-4 py-1 rounded text-white hover:bg-red-700" onClick={() => {
-                      setTempData({ ...tempData, experience: [] });
+setTempData({
+  ...tempData,
+  experience: [],
+  home: tempData.home,
+  about: tempData.about,
+  skills: tempData.skills,
+  projects: tempData.projects,
+  blogs: tempData.blogs,
+  publications: tempData.publications,
+  contact: tempData.contact
+});
                     }}>Reset</button>
                   </div>
                 </div>
@@ -990,14 +1103,15 @@ export default function AdminPage() {
                           className="p-2 rounded bg-gray-100 border"
                           onChange={e => {
                             const file = e.target.files?.[0];
-                            if (file) {
+                            if (!file) { return;
+                            } else {
                               // Show preview
                               const reader = new FileReader();
                               reader.onload = ev => {
                                 handleBlogChange(idx, "imagePreview", ev.target?.result as string);
                               };
                               reader.readAsDataURL(file);
-                              handleBlogChange(idx, "imageFile", file);
+                              handleBlogChange(idx, "imageFile", "" + file);
                             }
                           }}
                         />
@@ -1027,8 +1141,27 @@ export default function AdminPage() {
                               const updatedBlogs = tempData.blogs.map((b: any, i: number) =>
                                 i === idx ? { ...b, image: saved.image, imageFile: undefined, imagePreview: undefined } : b
                               );
-                              setTempData({ ...tempData, blogs: updatedBlogs });
-                              setDataState({ ...data, blogs: updatedBlogs });
+setTempData({
+  ...tempData,
+  blogs: updatedBlogs,
+  home: tempData.home ?? { greeting: "", name: "", intro: "", textColor: "" },
+  about: tempData.about ?? { description: "", textColor: "" },
+  skills: tempData.skills ?? [],
+  experience: tempData.experience ?? [],
+  projects: tempData.projects ?? [],
+  publications: tempData.publications ?? [],
+  contact: tempData.contact ?? { email: "", phone: "", linkedin: "", github: "", textColor: "" }
+});
+setDataState({
+  home: data.home ?? { greeting: "", name: "", intro: "", textColor: "" },
+  about: data.about ?? { description: "", textColor: "" },
+  skills: data.skills ?? [],
+  experience: data.experience ?? [],
+  projects: data.projects ?? [],
+  blogs: updatedBlogs,
+  publications: data.publications ?? [],
+  contact: data.contact ?? { email: "", phone: "", linkedin: "", github: "", textColor: "" }
+});
                               setEdit({ ...edit, blogs: false });
                             } else {
                               await handleBlogsSave();
@@ -1070,14 +1203,14 @@ export default function AdminPage() {
                     <div key={idx} className="flex items-center gap-2 mb-2">
                       <input
                         className="p-2 rounded bg-gray-100 border"
-                        value={skill.name}
+                        value={tempData && tempData.skills && tempData.skills[idx] ? tempData.skills[idx].name : ""}
                         placeholder="Skill Name"
-                        onChange={(e) => handleSkillChange(idx, "name", e.target.value)}
+                        onChange={(e) => tempData && tempData.skills && handleSkillChange(idx, "name", e.target.value)}
                       />
                       <select
                         className="p-2 rounded bg-gray-100 border"
-                        value={skill.icon}
-                        onChange={(e) => handleSkillChange(idx, "icon", e.target.value)}
+                        value={tempData && tempData.skills && tempData.skills[idx] ? tempData.skills[idx].icon : ""}
+                        onChange={(e) => tempData && tempData.skills && handleSkillChange(idx, "icon", e.target.value)}
                       >
                         {SKILL_ICON_OPTIONS.map((opt) => (
                           <option key={opt.value} value={opt.value}>
@@ -1157,9 +1290,55 @@ export default function AdminPage() {
                     }
                   />
                   <div className="flex gap-2 mt-2">
-                    <button className="bg-green-600 px-4 py-1 rounded text-white hover:bg-green-700" onClick={() => handleSave("contact")}>Save</button>
-                    <button className="bg-gray-600 px-4 py-1 rounded text-white hover:bg-gray-700" onClick={() => handleCancel("contact")}>Cancel</button>
-                    <button className="bg-red-600 px-4 py-1 rounded text-white hover:bg-red-700" onClick={() => handleReset("contact")}>Reset</button>
+<button className="bg-green-600 px-4 py-1 rounded text-white hover:bg-green-700" onClick={async () => {
+  if (!data || !tempData) return;
+  setDataState({
+    ...data,
+    contact: tempData.contact,
+    home: tempData.home,
+    about: tempData.about,
+    skills: tempData.skills,
+    experience: tempData.experience,
+    projects: tempData.projects,
+    blogs: tempData.blogs,
+    publications: tempData.publications
+  });
+  setEdit({ ...edit, contact: false });
+  await fetch("/api/contact", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(tempData.contact),
+  });
+}}>Save</button>
+<button className="bg-gray-600 px-4 py-1 rounded text-white hover:bg-gray-700" onClick={() => {
+  setEdit({ ...edit, contact: false });
+  if (!data) return;
+  setTempData({
+    ...data,
+    contact: { ...data.contact },
+    home: data.home,
+    about: data.about,
+    skills: data.skills,
+    experience: data.experience,
+    projects: data.projects,
+    blogs: data.blogs,
+    publications: data.publications
+  });
+}}>Cancel</button>
+<button className="bg-red-600 px-4 py-1 rounded text-white hover:bg-red-700" onClick={() => {
+  if (!data) return;
+  setTempData({
+    ...data,
+    contact: { ...data.contact },
+    home: data.home,
+    about: data.about,
+    skills: data.skills,
+    experience: data.experience,
+    projects: data.projects,
+    blogs: data.blogs,
+    publications: data.publications
+  });
+}}>Reset</button>
                   </div>
                 </>
               ) : (
