@@ -4,7 +4,7 @@ import React, { useRef, useEffect } from "react";
 /**
  * Animated snow/particle effect for background.
  */
-const SnowEffect: React.FC<{ color?: string }> = ({ color = "#fff" }) => {
+const SnowEffect: React.FC<{ color?: string }> = ({ color = "#ea86a4" }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -90,3 +90,4 @@ const SnowEffect: React.FC<{ color?: string }> = ({ color = "#fff" }) => {
 };
 
 export default SnowEffect;
+
