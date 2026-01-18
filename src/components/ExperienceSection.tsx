@@ -16,7 +16,16 @@ const ExperienceSection: React.FC = () => {
     fetch("/api/experience")
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) setExperiences(data);
+        if (Array.isArray(data)) {
+          // Map admin/API keys to UI keys if needed
+          const mapped = data.map((exp: any) => ({
+            role: exp.role ?? exp.title ?? "",
+            company: exp.company ?? "",
+            period: exp.period ?? exp.duration ?? "",
+            description: exp.description ?? "",
+          }));
+          setExperiences(mapped);
+        }
       });
   }, []);
 
