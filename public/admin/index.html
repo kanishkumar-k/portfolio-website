@@ -9,10 +9,8 @@
     <script>
       window.CMS_MANUAL_INIT = true;
     </script>
-    <script src="admin/config.yml" type="text/yaml"></script>
     <script>
-      window.CMS.init();
+      window.CMS.init({ config: "/admin/config.yml" });
     </script>
   </body>
 </html>
-
