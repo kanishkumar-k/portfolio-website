@@ -508,7 +508,7 @@ const handleSkillChange = (idx: number, field: string, value: string) => {
       }),
     });
   };
-  const handleBlogChange = (idx: number, field: string, value: string) => {
+  const handleBlogChange = (idx: number, field: string, value: any) => {
     if (!tempData) return;
     const updated = tempData.blogs.map((b: any, i: number) =>
       i === idx ? { ...b, [field]: value } : b
@@ -1164,7 +1164,7 @@ setTempData({
                                 handleBlogChange(idx, "imagePreview", ev.target?.result as string);
                               };
                               reader.readAsDataURL(file);
-                              handleBlogChange(idx, "imageFile", "" + file);
+                              handleBlogChange(idx, "imageFile", file);
                             }
                           }}
                         />
@@ -1192,9 +1192,18 @@ setTempData({
                                 body: formData,
                               });
                               const saved = await res.json();
+                              // Remove imageFile and imagePreview before saving
                               const updatedBlogs = tempData.blogs.map((b: any, i: number) =>
-                                i === idx ? { ...b, image: saved.image, imageFile: undefined, imagePreview: undefined } : b
-                              );
+                                i === idx
+                                  ? {
+                                      ...b,
+                                      image: saved.image,
+                                    }
+                                  : b
+                              ).map((b: any) => {
+                                const { imageFile, imagePreview, ...rest } = b;
+                                return rest;
+                              });
                               setTempData({
                                 ...tempData,
                                 blogs: updatedBlogs,
