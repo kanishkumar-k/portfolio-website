@@ -8,24 +8,22 @@ import { useTheme } from "./ui/ThemeProvider";
 /**
  * Home section with blurred glassy background, radial glow, and glowing text.
  */
-const defaultHome = {
-  greeting: "Hi there 👋",
-  name: "I'm Kanishkumar",
-  intro:
-    "I am a passionate developer specializing in backend development with exposure to various technologies. Welcome to my portfolio!",
-};
-
 const HomeSection: React.FC = () => {
-  const [home, setHome] = useState(defaultHome);
+  const [home, setHome] = useState<{ greeting?: string; name?: string; intro?: string }>({});
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("portfolioData");
-      if (stored) {
-        const data = JSON.parse(stored);
-        if (data.home) setHome(data.home);
+    const fetchHome = async () => {
+      try {
+        const res = await fetch("/api/home");
+        if (res.ok) {
+          const data = await res.json();
+          setHome(data);
+        }
+      } catch (error) {
+        // Optionally handle error, e.g., log or set error state
       }
-    }
+    };
+    fetchHome();
   }, []);
 
   const { theme } = useTheme();
@@ -84,9 +82,9 @@ const HomeSection: React.FC = () => {
           >
             <br />
             <br />
-            {home.greeting}
+            {home?.greeting || ""}
             <br />
-            <span className="text-1xl sm:text-5xl" style={{ color: "var(--foreground)" }}>{home.name}</span>
+            <span className="text-1xl sm:text-5xl" style={{ color: "var(--foreground)" }}>{home?.name || ""}</span>
             <br />
           </motion.h1>
           <motion.p
@@ -101,7 +99,7 @@ const HomeSection: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.7 }}
           >
-            {home.intro}
+            {home?.intro || ""}
           </motion.p>
           <motion.a
             href="/kanishkumar-resume.pdf"
