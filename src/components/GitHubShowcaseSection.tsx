@@ -17,14 +17,33 @@ type Repo = {
 
 const fetchTopRepos = async (username: string): Promise<Repo[]> => {
   try {
-    const res = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`);
-    const data = await res.json();
-    if (!Array.isArray(data)) return [];
-    // Sort by stars, take top 6
-    return data
-      .filter((repo: any) => !repo.fork)
-      .sort((a: Repo, b: Repo) => b.stargazers_count - a.stargazers_count)
-      .slice(0, 6);
+    // Try to load favorite repo names from JSON
+    let favoriteNames: string[] = [];
+    try {
+      const favRes = await fetch("/data/github-top-repos.json");
+      if (favRes.ok) {
+        favoriteNames = await favRes.json();
+      }
+    } catch {}
+    if (favoriteNames && favoriteNames.length === 6) {
+      // Fetch all repos and filter by favorite names
+      const res = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`);
+      const data = await res.json();
+      if (!Array.isArray(data)) return [];
+      return favoriteNames
+        .map((name) => data.find((repo: any) => repo.name === name))
+        .filter(Boolean)
+        .slice(0, 6);
+    } else {
+      // Fallback: Sort by stars, take top 6
+      const res = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`);
+      const data = await res.json();
+      if (!Array.isArray(data)) return [];
+      return data
+        .filter((repo: any) => !repo.fork)
+        .sort((a: Repo, b: Repo) => b.stargazers_count - a.stargazers_count)
+        .slice(0, 6);
+    }
   } catch {
     return [];
   }
