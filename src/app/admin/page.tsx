@@ -460,6 +460,13 @@ const handleSkillChange = (idx: number, field: string, value: string) => {
   };
   const handleBlogsSave = async () => {
     if (!data || !tempData) return;
+    // Clean blogs: only keep title, url, description, image
+    const cleanedBlogs = (tempData.blogs || []).map((b: any) => ({
+      title: b.title,
+      url: b.url,
+      description: b.description,
+      image: b.image && typeof b.image === "string" && b.image.startsWith("/images/") ? b.image : "",
+    }));
     const newData: PortfolioData = {
       ...data,
       home: data.home!,
@@ -467,7 +474,7 @@ const handleSkillChange = (idx: number, field: string, value: string) => {
       skills: data.skills!,
       experience: data.experience!,
       projects: data.projects!,
-      blogs: tempData.blogs ? [...tempData.blogs] : [],
+      blogs: cleanedBlogs,
       publications: data.publications!,
       contact: data.contact!
     };
@@ -478,7 +485,7 @@ const handleSkillChange = (idx: number, field: string, value: string) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         filePath: "data/blogs.json",
-        json: tempData.blogs,
+        json: cleanedBlogs,
         commitMessage: "Update blogs.json via admin"
       }),
     });
