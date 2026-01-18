@@ -13,7 +13,7 @@ const SectionSeparator: React.FC<{ color?: string; flip?: boolean; className?: s
   flip = false,
   className = "",
 }) => {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState<boolean | null>(null);
 
   useEffect(() => {
     const checkDark = () =>
@@ -22,6 +22,11 @@ const SectionSeparator: React.FC<{ color?: string; flip?: boolean; className?: s
     window.addEventListener("storage", checkDark);
     return () => window.removeEventListener("storage", checkDark);
   }, []);
+
+  if (isDark === null) {
+    // Avoid hydration mismatch: render nothing until theme is known
+    return null;
+  }
 
   return (
     <div className={className} style={{ lineHeight: 0 }}>
