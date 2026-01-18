@@ -1161,18 +1161,28 @@ setTempData({
                           type="file"
                           accept="image/*"
                           className="p-2 rounded bg-gray-100 border"
-                          onChange={e => {
+                          onChange={async e => {
                             const file = e.target.files?.[0];
-                            if (!file) { return;
-                            } else {
-                              // Show preview
-                              const reader = new FileReader();
-                              reader.onload = ev => {
-                                handleBlogChange(idx, "imagePreview", ev.target?.result as string);
-                              };
-                              reader.readAsDataURL(file);
-                              handleBlogChange(idx, "imageFile", file);
+                            if (!file) { return; }
+                            // Show preview
+                            const reader = new FileReader();
+                            reader.onload = ev => {
+                              handleBlogChange(idx, "imagePreview", ev.target?.result as string);
+                            };
+                            reader.readAsDataURL(file);
+                            // Upload image immediately
+                            const formData = new FormData();
+                            formData.append("image", file);
+                            formData.append("title", tempData.blogs[idx]?.title || "blog");
+                            const res = await fetch("/api/blogs/image", {
+                              method: "POST",
+                              body: formData,
+                            });
+                            const result = await res.json();
+                            if (result.image) {
+                              handleBlogChange(idx, "image", result.image);
                             }
+                            handleBlogChange(idx, "imageFile", file);
                           }}
                         />
                         {blog.imagePreview && (
@@ -1186,6 +1196,20 @@ setTempData({
                       <div className="flex gap-2 mt-2">
                         <button
                           className="bg-green-600 px-4 py-1 rounded text-white hover:bg-green-700"
+                          disabled={
+                            !(
+                              (tempData.blogs[idx]?.image && tempData.blogs[idx].image.startsWith("/images/")) ||
+                              tempData.blogs[idx]?.imageFile
+                            )
+                          }
+                          title={
+                            !(
+                              (tempData.blogs[idx]?.image && tempData.blogs[idx].image.startsWith("/images/")) ||
+                              tempData.blogs[idx]?.imageFile
+                            )
+                              ? "Please upload an image before saving."
+                              : undefined
+                          }
                           onClick={async () => {
                             const blog = tempData.blogs[idx];
                             if (blog.imageFile) {
