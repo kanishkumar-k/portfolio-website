@@ -1187,11 +1187,8 @@ setTempData({
                             handleBlogChange(idx, "imageFile", file);
                           }}
                         />
-                        {blog.imagePreview && (
-                          <img src={blog.imagePreview} alt="Preview" style={{ maxWidth: 120, borderRadius: 8, marginTop: 4 }} />
-                        )}
-                        {blog.image && !blog.imagePreview && (
-                          <img src={blog.image} alt="Current" style={{ maxWidth: 120, borderRadius: 8, marginTop: 4 }} />
+                        {blog.image && blog.image.startsWith("/images/") && (
+                          <img src={blog.image} alt="Blog" style={{ maxWidth: 120, borderRadius: 8, marginTop: 4 }} />
                         )}
                       </div>
                       <button className="bg-red-600 px-2 py-1 rounded text-white hover:bg-red-700" onClick={() => handleRemoveBlog(idx)}>Remove</button>
