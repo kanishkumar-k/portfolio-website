@@ -940,10 +940,14 @@ setDataState({
   contact: tempData.contact
 });
                       setEdit({ ...edit, experience: false });
-                      await fetch("/api/experience", {
+                      await fetch("/api/github-update", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(tempData.experience),
+                        body: JSON.stringify({
+                          filePath: "data/experience.json",
+                          json: tempData.experience,
+                          commitMessage: "Update experience.json via admin"
+                        }),
                       });
                     }}>Save</button>
                     <button className="bg-gray-600 px-4 py-1 rounded text-white hover:bg-gray-700" onClick={() => {
@@ -1182,6 +1186,7 @@ setTempData({
                               const { imageFile, imagePreview, ...rest } = blog;
                               formData.append("data", JSON.stringify(rest));
                               formData.append("image", blog.imageFile);
+                              // Upload image to /api/blogs, then update blogs.json via /api/github-update
                               const res = await fetch("/api/blogs", {
                                 method: "POST",
                                 body: formData,
@@ -1190,28 +1195,38 @@ setTempData({
                               const updatedBlogs = tempData.blogs.map((b: any, i: number) =>
                                 i === idx ? { ...b, image: saved.image, imageFile: undefined, imagePreview: undefined } : b
                               );
-setTempData({
-  ...tempData,
-  blogs: updatedBlogs,
-  home: tempData.home ?? { greeting: "", name: "", intro: "", textColor: "" },
-  about: tempData.about ?? { description: "", textColor: "" },
-  skills: tempData.skills ?? [],
-  experience: tempData.experience ?? [],
-  projects: tempData.projects ?? [],
-  publications: tempData.publications ?? [],
-  contact: tempData.contact ?? { email: "", phone: "", linkedin: "", github: "", textColor: "" }
-});
-setDataState({
-  home: data.home ?? { greeting: "", name: "", intro: "", textColor: "" },
-  about: data.about ?? { description: "", textColor: "" },
-  skills: data.skills ?? [],
-  experience: data.experience ?? [],
-  projects: data.projects ?? [],
-  blogs: updatedBlogs,
-  publications: data.publications ?? [],
-  contact: data.contact ?? { email: "", phone: "", linkedin: "", github: "", textColor: "" }
-});
+                              setTempData({
+                                ...tempData,
+                                blogs: updatedBlogs,
+                                home: tempData.home ?? { greeting: "", name: "", intro: "", textColor: "" },
+                                about: tempData.about ?? { description: "", textColor: "" },
+                                skills: tempData.skills ?? [],
+                                experience: tempData.experience ?? [],
+                                projects: tempData.projects ?? [],
+                                publications: tempData.publications ?? [],
+                                contact: tempData.contact ?? { email: "", phone: "", linkedin: "", github: "", textColor: "" }
+                              });
+                              setDataState({
+                                home: data.home ?? { greeting: "", name: "", intro: "", textColor: "" },
+                                about: data.about ?? { description: "", textColor: "" },
+                                skills: data.skills ?? [],
+                                experience: data.experience ?? [],
+                                projects: data.projects ?? [],
+                                blogs: updatedBlogs,
+                                publications: data.publications ?? [],
+                                contact: data.contact ?? { email: "", phone: "", linkedin: "", github: "", textColor: "" }
+                              });
                               setEdit({ ...edit, blogs: false });
+                              // Update blogs.json via GitHub
+                              await fetch("/api/github-update", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                  filePath: "data/blogs.json",
+                                  json: updatedBlogs,
+                                  commitMessage: "Update blogs.json via admin"
+                                }),
+                              });
                             } else {
                               await handleBlogsSave();
                             }
