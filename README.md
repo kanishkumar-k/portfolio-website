@@ -49,7 +49,6 @@ All content is managed via editable JSON files in the `data/` directory. A "file
 
 - **All Content as JSON:** Every section of the portfolio (about, skills, experience, projects, blogs, contact, home, top repos, etc.) is controlled by a corresponding JSON file in the `data/` directory.
 - **Manual Editing:** Updation of portfolio takes place by admin page which directly updates the json files via github write api — without any external CMS.
-- **Live Updates:** The site reads these JSON files at runtime, so changes are reflected immediately with vercel deploy
 
 ## Main JSON Files
 
@@ -60,5 +59,8 @@ All content is managed via editable JSON files in the `data/` directory. A "file
 - `blogs.json` — Blog entries
 - `contact.json` — Contact information
 - `home.json` — Home/hero section content
+
+  Sections are currently predefined and limited.
+  WIP for Automatically population of new section via admin portal
 
 Admin page to update portfoilo content - /admin
