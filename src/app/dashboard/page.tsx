@@ -266,24 +266,36 @@ setDataState({
 
     // Sync to backend API for about, home, etc.
     if (section === "about") {
-      await fetch("/api/about", {
+      await fetch("/api/github-update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(tempData.about),
+        body: JSON.stringify({
+          filePath: "data/about.json",
+          json: tempData.about,
+          commitMessage: "Update about.json via admin"
+        }),
       });
     }
     if (section === "home") {
-      await fetch("/api/home", {
+      await fetch("/api/github-update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(tempData.home),
+        body: JSON.stringify({
+          filePath: "data/home.json",
+          json: tempData.home,
+          commitMessage: "Update home.json via admin"
+        }),
       });
     }
     if (section === "contact") {
-      await fetch("/api/contact", {
+      await fetch("/api/github-update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(tempData.contact),
+        body: JSON.stringify({
+          filePath: "data/contact.json",
+          json: tempData.contact,
+          commitMessage: "Update contact.json via admin"
+        }),
       });
     }
   };
@@ -316,10 +328,14 @@ setDataState({
     };
     setDataState(newData);
     setEdit({ ...edit, skills: false });
-    await fetch("/api/skills", {
+    await fetch("/api/github-update", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(tempData.skills),
+      body: JSON.stringify({
+        filePath: "data/skills.json",
+        json: tempData.skills,
+        commitMessage: "Update skills.json via admin"
+      }),
     });
   };
 const handleSkillChange = (idx: number, field: string, value: string) => {
@@ -377,10 +393,14 @@ const handleSkillChange = (idx: number, field: string, value: string) => {
     };
     setDataState(newData);
     setEdit({ ...edit, projects: false });
-    await fetch("/api/projects", {
+    await fetch("/api/github-update", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(cleanedProjects),
+      body: JSON.stringify({
+        filePath: "data/projects.json",
+        json: cleanedProjects,
+        commitMessage: "Update projects.json via admin"
+      }),
     });
   };
   const handleProjectChange = (idx: number, field: string, value: string) => {
@@ -453,10 +473,39 @@ const handleSkillChange = (idx: number, field: string, value: string) => {
     };
     setDataState(newData);
     setEdit({ ...edit, blogs: false });
-    await fetch("/api/blogs", {
+    await fetch("/api/github-update", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(tempData.blogs),
+      body: JSON.stringify({
+        filePath: "data/blogs.json",
+        json: tempData.blogs,
+        commitMessage: "Update blogs.json via admin"
+      }),
+    });
+  };
+  const handleExperienceSave = async () => {
+    if (!data || !tempData) return;
+    const newData: PortfolioData = {
+      ...data,
+      home: data.home!,
+      about: data.about!,
+      skills: data.skills!,
+      experience: tempData.experience ? [...tempData.experience] : [],
+      projects: data.projects!,
+      blogs: data.blogs!,
+      publications: data.publications!,
+      contact: data.contact!
+    };
+    setDataState(newData);
+    setEdit({ ...edit, experience: false });
+    await fetch("/api/github-update", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        filePath: "data/experience.json",
+        json: tempData.experience,
+        commitMessage: "Update experience.json via admin"
+      }),
     });
   };
   const handleBlogChange = (idx: number, field: string, value: string) => {
