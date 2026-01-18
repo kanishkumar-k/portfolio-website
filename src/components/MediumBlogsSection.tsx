@@ -48,14 +48,14 @@ const MediumBlogsSection: React.FC = () => {
                 transition={{ duration: 0.6, delay: idx * 0.2 }}
                 style={{ color: "var(--foreground)" }}
               >
-                {blog.image && (
+                {blog.image && blog.image.startsWith("/images/") ? (
                   <img
                     src={blog.image}
                     alt={blog.title}
                     className="w-full h-40 object-cover rounded-lg mb-3 border border-white/20 blog-image"
                     style={{ background: "#222", objectFit: "cover" }}
                   />
-                )}
+                ) : null}
                 <a href={blog.url} target="_blank" rel="noopener noreferrer" className="text-xl font-semibold hover:underline" style={{ color: "var(--foreground)" }}>
                   {blog.title}
                 </a>
