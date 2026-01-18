@@ -22,7 +22,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const stored = typeof window !== "undefined" ? localStorage.getItem("theme") : null;
     if (stored === "light" || stored === "dark") setTheme(stored);
-    else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) setTheme("light");
+    // Always default to dark if not set in localStorage
   }, []);
 
   useEffect(() => {
