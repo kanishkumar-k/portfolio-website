@@ -44,11 +44,7 @@
     "icon": "SiMongodb"
   },
   {
-    "name": "PostgreS",
+    "name": "PostgreSQL",
     "icon": "SiPostgresql"
-  },
-  {
-    "name": "m",
-    "icon": "FaCode"
   }
 ]
