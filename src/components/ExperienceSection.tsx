@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useTheme } from "./ui/ThemeProvider";
 
 interface Experience {
   role: string;
@@ -11,6 +12,7 @@ interface Experience {
 
 const ExperienceSection: React.FC = () => {
   const [experiences, setExperiences] = useState<Experience[]>([]);
+  const { theme } = useTheme();
 
   useEffect(() => {
     fetch("/api/experience")
@@ -41,9 +43,19 @@ const ExperienceSection: React.FC = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
-        <h2 className="text-3xl font-bold mb-4 text-center font-['JetBrains_Mono',monospace] text-[var(--foreground)]">Experience</h2>
+        <h2
+          className="text-3xl font-bold mb-4 text-center font-['JetBrains_Mono',monospace]"
+          style={{ color: theme === "light" ? "#111" : "var(--foreground)" }}
+        >
+          Experience
+        </h2>
         {experiences.length === 0 ? (
-          <div className="text-center" style={{ color: "var(--foreground)", opacity: 0.7 }}>No experience data available.</div>
+          <div
+            className="text-center"
+            style={{ color: theme === "light" ? "#111" : "var(--foreground)", opacity: 0.7 }}
+          >
+            No experience data available.
+          </div>
         ) : (
           <ul className="space-y-8">
             {experiences.map((exp, idx) => (
@@ -55,9 +67,24 @@ const ExperienceSection: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: idx * 0.2 }}
               >
-                <h3 className="text-xl font-semibold text-white mb-1">{exp.role}</h3>
-                <p className="text-md text-white/80">{exp.company} &mdash; <span className="italic">{exp.period}</span></p>
-                <p className="mt-2 text-white/70">{exp.description}</p>
+                <h3
+                  className="text-xl font-semibold mb-1"
+                  style={{ color: theme === "light" ? "#111" : "#fff" }}
+                >
+                  {exp.role}
+                </h3>
+                <p
+                  className="text-md"
+                  style={{ color: theme === "light" ? "#222" : "rgba(255,255,255,0.8)" }}
+                >
+                  {exp.company} &mdash; <span className="italic">{exp.period}</span>
+                </p>
+                <p
+                  className="mt-2"
+                  style={{ color: theme === "light" ? "#333" : "rgba(255,255,255,0.7)" }}
+                >
+                  {exp.description}
+                </p>
               </motion.li>
             ))}
           </ul>
