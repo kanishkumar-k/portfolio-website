@@ -34,3 +34,30 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+
+## Description:
+
+# JSON-Based Configuration-Driven Portfolio
+
+This project uses a **JSON-based configuration-driven** approach for all portfolio content and settings. 
+
+Instead of relying on a traditional CMS or database, all content is managed via editable JSON files in the `data/` directory. A "file-based CMS," "content as configuration," or "headless CMS pattern"— fully custom and code-driven.
+
+## How It Works
+
+- **All Content as JSON:** Every section of the portfolio (about, skills, experience, projects, blogs, contact, home, top repos, etc.) is controlled by a corresponding JSON file in the `data/` directory.
+- **Manual Editing:** Updation of portfolio takes place by admin page which directly updates the json files via github write api — without any external CMS.
+- **Live Updates:** The site reads these JSON files at runtime, so changes are reflected immediately with vercel deploy
+
+## Main JSON Files
+
+- `about.json` — About section content
+- `skills.json` — List of skills and icons
+- `experience.json` — Work/education experience entries
+- `projects.json` — Portfolio projects
+- `blogs.json` — Blog entries
+- `contact.json` — Contact information
+- `home.json` — Home/hero section content
+
