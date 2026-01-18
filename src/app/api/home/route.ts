@@ -9,17 +9,12 @@ function getJsonPath() {
 
 export async function GET() {
   const jsonPath = getJsonPath();
-  let data = {
-    greeting: "Hi there 👋",
-    name: "I'm Kanishkumar",
-    intro: "I am a passionate developer specializing in backend development with exposure to various technologies. Welcome to my portfolio!",
-    textColor: "#23272f"
-  };
   if (fs.existsSync(jsonPath)) {
     const file = fs.readFileSync(jsonPath, "utf-8");
-    data = JSON.parse(file);
+    const data = JSON.parse(file);
+    return NextResponse.json(data);
   }
-  return NextResponse.json(data);
+  return NextResponse.json({});
 }
 
 export async function POST(req: NextRequest) {
