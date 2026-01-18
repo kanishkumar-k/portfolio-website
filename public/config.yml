@@ -1,0 +1,95 @@
+backend:
+  name: github
+  repo: kanishkumar-k/portfolio-website
+  branch: main
+
+media_folder: "public/images"
+public_folder: "/images"
+
+collections:
+  - name: "about"
+    label: "About"
+    files:
+      - file: "data/about.json"
+        label: "About"
+        name: "about"
+        fields:
+          - { label: "Description", name: "description", widget: "string" }
+          - { label: "Text Color", name: "textColor", widget: "string" }
+
+  - name: "home"
+    label: "Home"
+    files:
+      - file: "data/home.json"
+        label: "Home"
+        name: "home"
+        fields:
+          - { label: "Greeting", name: "greeting", widget: "string" }
+          - { label: "Name", name: "name", widget: "string" }
+          - { label: "Intro", name: "intro", widget: "text" }
+          - { label: "Text Color", name: "textColor", widget: "string" }
+
+  - name: "skills"
+    label: "Skills"
+    files:
+      - file: "data/skills.json"
+        label: "Skills"
+        name: "skills"
+        fields:
+          - { label: "Skills", name: "", widget: "list", fields: [
+              { label: "Name", name: "name", widget: "string" },
+              { label: "Icon", name: "icon", widget: "string" }
+            ] }
+
+  - name: "experience"
+    label: "Experience"
+    files:
+      - file: "data/experience.json"
+        label: "Experience"
+        name: "experience"
+        fields:
+          - { label: "Experience", name: "", widget: "list", fields: [
+              { label: "Title", name: "title", widget: "string" },
+              { label: "Company", name: "company", widget: "string" },
+              { label: "Duration", name: "duration", widget: "string" },
+              { label: "Description", name: "description", widget: "text", required: false }
+            ] }
+
+  - name: "projects"
+    label: "Projects"
+    files:
+      - file: "data/projects.json"
+        label: "Projects"
+        name: "projects"
+        fields:
+          - { label: "Projects", name: "", widget: "list", fields: [
+              { label: "Title", name: "title", widget: "string" },
+              { label: "Description", name: "description", widget: "text" },
+              { label: "Link", name: "link", widget: "string" }
+            ] }
+
+  - name: "blogs"
+    label: "Blogs"
+    files:
+      - file: "data/blogs.json"
+        label: "Blogs"
+        name: "blogs"
+        fields:
+          - { label: "Blogs", name: "", widget: "list", fields: [
+              { label: "Title", name: "title", widget: "string" },
+              { label: "URL", name: "url", widget: "string" },
+              { label: "Description", name: "description", widget: "text", required: false }
+            ] }
+
+  - name: "contact"
+    label: "Contact"
+    files:
+      - file: "data/contact.json"
+        label: "Contact"
+        name: "contact"
+        fields:
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Phone", name: "phone", widget: "string" }
+          - { label: "LinkedIn", name: "linkedin", widget: "string" }
+          - { label: "GitHub", name: "github", widget: "string" }
+          - { label: "Text Color", name: "textColor", widget: "string" }
