@@ -61,3 +61,4 @@ Instead of relying on a traditional CMS or database, all content is managed via 
 - `contact.json` — Contact information
 - `home.json` — Home/hero section content
 
+Admin page to update portfoilo content - /admin
