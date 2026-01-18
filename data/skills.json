@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Python",
+    "icon": "SiPython"
+  },
+  {
+    "name": "JavaScript (ES6+)",
+    "icon": "SiJavascript"
+  },
+  {
+    "name": "FastAPI",
+    "icon": "SiFastapi"
+  },
+  {
+    "name": "Django",
+    "icon": "SiDjango"
+  },
+  {
+    "name": "Streamlit",
+    "icon": "SiStreamlit"
+  },
+  {
+    "name": "Node.js",
+    "icon": "SiNodedotjs"
+  },
+  {
+    "name": "React.js",
+    "icon": "SiReact"
+  },
+  {
+    "name": "GraphQL",
+    "icon": "SiGraphql"
+  },
+  {
+    "name": "Git & GitHub",
+    "icon": "SiGit"
+  },
+  {
+    "name": "MySQL",
+    "icon": "SiMysql"
+  },
+  {
+    "name": "MongoDB",
+    "icon": "SiMongodb"
+  },
+  {
+    "name": "PostgreSQL",
+    "icon": "SiPostgresql"
+  }
+]
