@@ -2,24 +2,21 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-/**
- * About section with glassy, dark, blurred style and white text.
- */
-const defaultAbout = {
-  description: "Write about yourself here.",
-};
-
 const AboutSection: React.FC = () => {
-  const [about, setAbout] = useState(defaultAbout);
+  const [about, setAbout] = useState<{ description?: string }>({});
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("portfolioData");
-      if (stored) {
-        const data = JSON.parse(stored);
-        if (data.about) setAbout(data.about);
+    const fetchAbout = async () => {
+      try {
+        const res = await fetch("/api/about");
+        if (res.ok) {
+          const data = await res.json();
+          setAbout(data);
+        }
+      } catch (error) {
       }
-    }
+    };
+    fetchAbout();
   }, []);
 
   return (
@@ -37,7 +34,9 @@ const AboutSection: React.FC = () => {
         <h2 className="text-3xl font-bold mb-4 text-center font-['JetBrains_Mono',monospace] text-[var(--foreground)]">
           About
         </h2>
-        <p className="text-lg text-center" style={{ color: "var(--foreground)", opacity: 0.9 }}>{about.description}</p>
+        <p className="text-lg text-center" style={{ color: "var(--foreground)", opacity: 0.9 }}>
+          {about?.description || ""}
+        </p>
       </motion.div>
     </section>
   );
