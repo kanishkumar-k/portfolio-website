@@ -1181,6 +1181,8 @@ setTempData({
                             const result = await res.json();
                             if (result.image) {
                               handleBlogChange(idx, "image", result.image);
+                            } else if (result.error) {
+                              alert("Image upload failed: " + (result.error.message || JSON.stringify(result.error)));
                             }
                             handleBlogChange(idx, "imageFile", file);
                           }}
@@ -1197,117 +1199,58 @@ setTempData({
                         <button
                           className="bg-green-600 px-4 py-1 rounded text-white hover:bg-green-700"
                           disabled={
-                            !(
-                              (tempData.blogs[idx]?.image && tempData.blogs[idx].image.startsWith("/images/")) ||
-                              tempData.blogs[idx]?.imageFile
-                            )
+                            !(tempData.blogs[idx]?.image && tempData.blogs[idx].image.startsWith("/images/"))
                           }
                           title={
-                            !(
-                              (tempData.blogs[idx]?.image && tempData.blogs[idx].image.startsWith("/images/")) ||
-                              tempData.blogs[idx]?.imageFile
-                            )
+                            !(tempData.blogs[idx]?.image && tempData.blogs[idx].image.startsWith("/images/"))
                               ? "Please upload an image before saving."
                               : undefined
                           }
                           onClick={async () => {
                             const blog = tempData.blogs[idx];
-                            if (blog.imageFile) {
-                              const formData = new FormData();
-                              const { imageFile, imagePreview, ...rest } = blog;
-                              formData.append("data", JSON.stringify(rest));
-                              formData.append("image", blog.imageFile);
-                              // Upload image to /api/blogs, then update blogs.json via /api/github-update
-                              const res = await fetch("/api/blogs", {
-                                method: "POST",
-                                body: formData,
-                              });
-                              const saved = await res.json();
-                              // Remove imageFile and imagePreview before saving
-                              const updatedBlogs = tempData.blogs.map((b: any, i: number) =>
-                                i === idx
-                                  ? {
-                                      ...b,
-                                      image: saved.image || b.image, // Use returned image path if available, else keep existing
-                                    }
-                                  : b
-                              ).map((b: any) => {
-                                const { imageFile, imagePreview, ...rest } = b;
-                                return rest;
-                              });
-                              setTempData({
-                                ...tempData,
-                                blogs: updatedBlogs,
-                                home: tempData.home ?? { greeting: "", name: "", intro: "", textColor: "" },
-                                about: tempData.about ?? { description: "", textColor: "" },
-                                skills: tempData.skills ?? [],
-                                experience: tempData.experience ?? [],
-                                projects: tempData.projects ?? [],
-                                publications: tempData.publications ?? [],
-                                contact: tempData.contact ?? { email: "", phone: "", linkedin: "", github: "", textColor: "" }
-                              });
-                              setDataState({
-                                home: data.home ?? { greeting: "", name: "", intro: "", textColor: "" },
-                                about: data.about ?? { description: "", textColor: "" },
-                                skills: data.skills ?? [],
-                                experience: data.experience ?? [],
-                                projects: data.projects ?? [],
-                                blogs: updatedBlogs,
-                                publications: data.publications ?? [],
-                                contact: data.contact ?? { email: "", phone: "", linkedin: "", github: "", textColor: "" }
-                              });
-                              setEdit({ ...edit, blogs: false });
-                              // Update blogs.json via GitHub
-                              await fetch("/api/github-update", {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({
-                                  filePath: "data/blogs.json",
-                                  json: updatedBlogs,
-                                  commitMessage: "Update blogs.json via admin"
-                                }),
-                              });
-                            } else {
-                              // If no new image, keep the existing image value
-                              const updatedBlogs = tempData.blogs.map((b: any, i: number) =>
-                                i === idx ? { ...b } : b
-                              ).map((b: any) => {
-                                const { imageFile, imagePreview, ...rest } = b;
-                                return rest;
-                              });
-                              setTempData({
-                                ...tempData,
-                                blogs: updatedBlogs,
-                                home: tempData.home ?? { greeting: "", name: "", intro: "", textColor: "" },
-                                about: tempData.about ?? { description: "", textColor: "" },
-                                skills: tempData.skills ?? [],
-                                experience: tempData.experience ?? [],
-                                projects: tempData.projects ?? [],
-                                publications: tempData.publications ?? [],
-                                contact: tempData.contact ?? { email: "", phone: "", linkedin: "", github: "", textColor: "" }
-                              });
-                              setDataState({
-                                home: data.home ?? { greeting: "", name: "", intro: "", textColor: "" },
-                                about: data.about ?? { description: "", textColor: "" },
-                                skills: data.skills ?? [],
-                                experience: data.experience ?? [],
-                                projects: data.projects ?? [],
-                                blogs: updatedBlogs,
-                                publications: data.publications ?? [],
-                                contact: data.contact ?? { email: "", phone: "", linkedin: "", github: "", textColor: "" }
-                              });
-                              setEdit({ ...edit, blogs: false });
-                              // Update blogs.json via GitHub
-                              await fetch("/api/github-update", {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({
-                                  filePath: "data/blogs.json",
-                                  json: updatedBlogs,
-                                  commitMessage: "Update blogs.json via admin"
-                                }),
-                              });
+                            if (!(blog.image && blog.image.startsWith("/images/"))) {
+                              alert("Please upload an image before saving.");
+                              return;
                             }
+                            // Remove imageFile and imagePreview before saving
+                            const updatedBlogs = tempData.blogs.map((b: any, i: number) =>
+                              i === idx ? { ...b } : b
+                            ).map((b: any) => {
+                              const { imageFile, imagePreview, ...rest } = b;
+                              return rest;
+                            });
+                            setTempData({
+                              ...tempData,
+                              blogs: updatedBlogs,
+                              home: tempData.home ?? { greeting: "", name: "", intro: "", textColor: "" },
+                              about: tempData.about ?? { description: "", textColor: "" },
+                              skills: tempData.skills ?? [],
+                              experience: tempData.experience ?? [],
+                              projects: tempData.projects ?? [],
+                              publications: tempData.publications ?? [],
+                              contact: tempData.contact ?? { email: "", phone: "", linkedin: "", github: "", textColor: "" }
+                            });
+                            setDataState({
+                              home: data.home ?? { greeting: "", name: "", intro: "", textColor: "" },
+                              about: data.about ?? { description: "", textColor: "" },
+                              skills: data.skills ?? [],
+                              experience: data.experience ?? [],
+                              projects: data.projects ?? [],
+                              blogs: updatedBlogs,
+                              publications: data.publications ?? [],
+                              contact: data.contact ?? { email: "", phone: "", linkedin: "", github: "", textColor: "" }
+                            });
+                            setEdit({ ...edit, blogs: false });
+                            // Update blogs.json via GitHub
+                            await fetch("/api/github-update", {
+                              method: "POST",
+                              headers: { "Content-Type": "application/json" },
+                              body: JSON.stringify({
+                                filePath: "data/blogs.json",
+                                json: updatedBlogs,
+                                commitMessage: "Update blogs.json via admin"
+                              }),
+                            });
                           }}
                         >
                           Save
