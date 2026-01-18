@@ -43,7 +43,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 This project uses a **JSON-based configuration-driven** approach for all portfolio content and settings. 
 
-Instead of relying on a traditional CMS or database, all content is managed via editable JSON files in the `data/` directory. A "file-based CMS," "content as configuration," or "headless CMS pattern"— fully custom and code-driven.
+All content is managed via editable JSON files in the `data/` directory. A "file-based CMS," "content as configuration," or "headless CMS pattern"— fully custom and code-driven. Via /admin, these data can be populated which are automatically pushed to  `data/` directory
 
 ## How It Works
 
