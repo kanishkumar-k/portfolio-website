@@ -3,10 +3,6 @@ import React, { useState, useEffect, useRef } from "react";
 import * as SiIcons from "react-icons/si";
 import { FaCode } from "react-icons/fa";
 
-
-/**
- * Type definitions for portfolio data structure.
- */
 interface Skill {
   name: string;
   icon: string;
@@ -69,11 +65,6 @@ interface PortfolioData {
   [key: string]: unknown;
 }
 
-/**
- * Dynamically generate all Si* icon options.
- * No default skills or dummy data is used anywhere in this file.
- * All data is loaded from the backend JSON files via API routes.
- */
 const SKILL_ICON_OPTIONS = Object.keys(SiIcons)
   .filter((k) => k.startsWith("Si"))
   .sort()
@@ -1471,3 +1462,4 @@ setTempData({
     </div>
   );
 }
+
