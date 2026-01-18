@@ -3,6 +3,10 @@ import React, { useState, useEffect, useRef } from "react";
 import * as SiIcons from "react-icons/si";
 import { FaCode } from "react-icons/fa";
 
+
+/**
+ * Type definitions for portfolio data structure.
+ */
 interface Skill {
   name: string;
   icon: string;
@@ -65,6 +69,11 @@ interface PortfolioData {
   [key: string]: unknown;
 }
 
+/**
+ * Dynamically generate all Si* icon options.
+ * No default skills or dummy data is used anywhere in this file.
+ * All data is loaded from the backend JSON files via API routes.
+ */
 const SKILL_ICON_OPTIONS = Object.keys(SiIcons)
   .filter((k) => k.startsWith("Si"))
   .sort()
@@ -1195,7 +1204,7 @@ setTempData({
                                 i === idx
                                   ? {
                                       ...b,
-                                      image: saved.image,
+                                      image: saved.image || b.image, // Use returned image path if available, else keep existing
                                     }
                                   : b
                               ).map((b: any) => {
@@ -1235,7 +1244,45 @@ setTempData({
                                 }),
                               });
                             } else {
-                              await handleBlogsSave();
+                              // If no new image, keep the existing image value
+                              const updatedBlogs = tempData.blogs.map((b: any, i: number) =>
+                                i === idx ? { ...b } : b
+                              ).map((b: any) => {
+                                const { imageFile, imagePreview, ...rest } = b;
+                                return rest;
+                              });
+                              setTempData({
+                                ...tempData,
+                                blogs: updatedBlogs,
+                                home: tempData.home ?? { greeting: "", name: "", intro: "", textColor: "" },
+                                about: tempData.about ?? { description: "", textColor: "" },
+                                skills: tempData.skills ?? [],
+                                experience: tempData.experience ?? [],
+                                projects: tempData.projects ?? [],
+                                publications: tempData.publications ?? [],
+                                contact: tempData.contact ?? { email: "", phone: "", linkedin: "", github: "", textColor: "" }
+                              });
+                              setDataState({
+                                home: data.home ?? { greeting: "", name: "", intro: "", textColor: "" },
+                                about: data.about ?? { description: "", textColor: "" },
+                                skills: data.skills ?? [],
+                                experience: data.experience ?? [],
+                                projects: data.projects ?? [],
+                                blogs: updatedBlogs,
+                                publications: data.publications ?? [],
+                                contact: data.contact ?? { email: "", phone: "", linkedin: "", github: "", textColor: "" }
+                              });
+                              setEdit({ ...edit, blogs: false });
+                              // Update blogs.json via GitHub
+                              await fetch("/api/github-update", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                  filePath: "data/blogs.json",
+                                  json: updatedBlogs,
+                                  commitMessage: "Update blogs.json via admin"
+                                }),
+                              });
                             }
                           }}
                         >
@@ -1462,4 +1509,3 @@ setTempData({
     </div>
   );
 }
-
