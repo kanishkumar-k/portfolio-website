@@ -60,7 +60,5 @@ All content is managed via editable JSON files in the `data/` directory. A "file
 - `contact.json` — Contact information
 - `home.json` — Home/hero section content
 
-  Sections are currently predefined and limited.
-  WIP for Automatically population of new section via admin portal
 
 Admin page to update portfoilo content - /admin
