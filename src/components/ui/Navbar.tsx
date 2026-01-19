@@ -83,7 +83,7 @@ export default function Navbar() {
               <li key={link.href} className="w-full">
                 <a
                   href={link.href}
-                  className={`block w-full py-2 font-bold nav-glossy ${
+                  className={`block w-full py-2 font-bold ${
                     theme === "dark" ? "text-white" : "text-black"
                   }`}
                   onClick={() => setMobileOpen(false)}
