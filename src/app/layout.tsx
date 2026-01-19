@@ -5,6 +5,7 @@ import ClientRoot from "../components/ui/ClientRoot";
 import SectionNavigator from "../components/ui/SectionNavigator";
 import { ThemeProvider } from "../components/ui/ThemeProvider";
 import ThemeToggleButton from "../components/ui/ThemeToggleButton";
+import ScrollbarToggleButton from "../components/ui/ScrollbarToggleButton";
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
@@ -57,6 +58,7 @@ export default function RootLayout({
             <SectionNavigator />
             {children}
           </ClientRoot>
+          <ScrollbarToggleButton />
         </ThemeProvider>
       </body>
     </html>
