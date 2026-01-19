@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 interface Project {
-  name: string;
+  title: string;
   description: string;
   link: string;
   image?: string;
@@ -39,7 +39,7 @@ const ProjectsSection: React.FC = () => {
           ) : (
             projects.map((project, idx) => (
               <motion.div
-                key={project.name || idx}
+key={project.title || idx}
                 className="bg-white/10 rounded-lg shadow-xl p-6 flex flex-col hover:scale-105 transition-transform duration-300 border border-white/10"
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -50,12 +50,12 @@ const ProjectsSection: React.FC = () => {
                 {project.image && (
                   <img
                     src={project.image}
-                    alt={project.name}
+alt={project.title}
                     className="w-full h-40 object-cover rounded-lg mb-3 border border-white/20 project-image"
                     style={{ background: "#222", objectFit: "cover" }}
                   />
                 )}
-                <h3 className="text-xl font-semibold mb-2" style={{ color: "var(--foreground)" }}>{project.name}</h3>
+<h3 className="text-xl font-semibold mb-2" style={{ color: "var(--foreground)" }}>{project.title}</h3>
                 <p className="flex-1" style={{ color: "var(--foreground)", opacity: 0.9 }}>{project.description}</p>
                 {project.link && (
                   <a
