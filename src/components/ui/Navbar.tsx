@@ -74,12 +74,18 @@ export default function Navbar() {
         </ul>
         {/* Mobile nav dropdown */}
         {mobileOpen && (
-          <ul className="absolute top-full left-0 w-full bg-[#23272f] border-b border-[#e5e7eb] flex flex-col items-start py-2 px-6 md:hidden animate-fade-in-down shadow-lg">
+          <ul
+            className={`absolute top-full left-0 w-full border-b border-[#e5e7eb] flex flex-col items-start py-2 px-6 md:hidden animate-fade-in-down shadow-lg ${
+              theme === "dark" ? "bg-[#23272f]" : "bg-white"
+            }`}
+          >
             {NAV_LINKS.map((link) => (
               <li key={link.href} className="w-full">
                 <a
                   href={link.href}
-                  className="block w-full py-2 text-white font-bold nav-glossy"
+                  className={`block w-full py-2 font-bold nav-glossy ${
+                    theme === "dark" ? "text-white" : "text-black"
+                  }`}
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}
