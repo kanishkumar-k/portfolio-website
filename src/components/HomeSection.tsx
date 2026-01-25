@@ -81,7 +81,7 @@ const HomeSection: React.FC = () => {
       <div className="absolute inset-0 z-0 pointer-events-none">
         <CodeParticlesEffect />
         {mounted && (
-          <SnowEffect color={theme === "dark" ? "#fff": "#ec4899"} />
+          <SnowEffect color={theme === "dark" ? "#ec4899" : "#fbbf24"} />
         )}
       </div>
 
@@ -106,24 +106,26 @@ const HomeSection: React.FC = () => {
         transition={{ duration: 1 }}
       >
         <motion.h1
-          className="text-xl sm:text-4xl mb-4 text-center tracking-widest font-extralight"
+          className="text-2xl xs:text-3xl sm:text-4xl mb-4 text-center tracking-widest font-extralight drop-shadow-md px-2"
           style={{
             color: "var(--foreground)",
             fontFamily: "'JetBrains Mono', 'Inter', monospace",
+            textShadow: "0 2px 8px rgba(0,0,0,0.10)"
           }}
         >
           {home.greeting}
           <br />
-          <span className="text-2xl sm:text-5xl font-semibold">
+          <span className="text-3xl xs:text-4xl sm:text-5xl font-semibold drop-shadow-md">
             {home.name}
           </span>
         </motion.h1>
 
         <motion.p
-          className="text-lg sm:text-xl mb-8 text-center max-w-xl"
+          className="text-base xs:text-lg sm:text-xl mb-8 text-center sm:text-justify max-w-full sm:max-w-xl px-2 drop-shadow"
           style={{
             color: "var(--foreground)",
             fontFamily: "'Inter', 'JetBrains Mono', monospace",
+            textShadow: "0 2px 8px rgba(0,0,0,0.10)"
           }}
         >
           {home.intro}
@@ -137,19 +139,26 @@ const HomeSection: React.FC = () => {
             cursor-pointer
             px-8 py-3 rounded-full shadow-xl font-semibold
             transition-all duration-300
-            ${loading ? "cursor-wait bg-gray-400" : "bg-white hover:scale-105 active:scale-95"}
-            ${theme === "dark" ? "text-black border-2 border-pink-500" : "text-[#101624] border-2 border-pink-400"}
-            flex items-center justify-center gap-2
+            ${loading ? "cursor-wait bg-gray-400" : "bg-white"}
+            ${theme === "dark" ? "text-black border-2 border-pink-500" : "text-[#101624] border-2 border-yellow-400"}
+            relative flex items-center justify-center w-[260px] min-w-[200px]
           `}
           style={{
             fontFamily: "'Inter', 'JetBrains Mono', monospace",
             letterSpacing: "0.05em",
           }}
         >
-          {loading && (
-            <span className="w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin" />
-          )}
-          DOWNLOAD MY RESUME
+          <span
+            className="absolute left-6 flex items-center justify-center"
+            style={{ minWidth: 24, minHeight: 20, display: "inline-flex" }}
+          >
+            {loading ? (
+              <span className="w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin" />
+            ) : (
+              <span style={{ width: 20, height: 20, display: "inline-block" }} />
+            )}
+          </span>
+          <span className="w-full text-center block">VIEW MY RESUME</span>
         </motion.button>
       </motion.div>
 
@@ -195,7 +204,7 @@ const HomeSection: React.FC = () => {
               font-medium flex items-center gap-4
             "
           >
-            <span>Resume currently unavailable</span>
+            <span>Resume unavailable</span>
             <button
               aria-label="Dismiss notification"
               onClick={() => setShowError(false)}

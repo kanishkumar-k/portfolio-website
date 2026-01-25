@@ -45,7 +45,6 @@ const ICON_MAP: { [key: string]: React.ReactNode } = {
 
 const SkillsSection: React.FC = () => {
   const [skills, setSkills] = useState<SkillType[]>([]);
-
   useEffect(() => {
     fetch("/api/skills")
       .then((res) => res.json())
@@ -66,7 +65,7 @@ const SkillsSection: React.FC = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
-        <h2 className="text-3xl font-bold mb-4 text-center font-['JetBrains_Mono',monospace] text-[var(--foreground)]">
+        <h2 className="text-3xl font-bold mb-4 text-center font-['JetBrains_Mono',monospace] text-[var(--foreground)] underline underline-offset-8 section-title-variant">
           Skills
         </h2>
         <ul className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-lg" style={{ color: "var(--foreground)", opacity: 0.9 }}>

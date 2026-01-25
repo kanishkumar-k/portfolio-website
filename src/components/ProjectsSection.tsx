@@ -11,6 +11,7 @@ interface Project {
 
 const ProjectsSection: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
     fetch("/api/projects")
@@ -23,16 +24,20 @@ const ProjectsSection: React.FC = () => {
   return (
     <section
       id="projects"
-      className="w-full py-24 px-4 flex justify-center items-center relative bg-[var(--background)]"
+      className="w-full pt-24 pb-8 px-4 flex justify-center items-center relative bg-[var(--background)]"
     >
       <motion.div
-        className="section-card w-full max-w-3xl mx-auto backdrop-blur-lg bg-white/10 rounded-2xl shadow-2xl p-10 border border-white/20"
+        className={`section-card w-full max-w-3xl mx-auto backdrop-blur-lg bg-white/10 rounded-2xl shadow-2xl p-10 border border-white/20${active ? " section-card-active" : ""}`}
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
+        tabIndex={0}
+        onClick={() => setActive(true)}
+        onFocus={() => setActive(true)}
+        onBlur={() => setActive(false)}
       >
-        <h2 className="text-3xl font-bold mb-4 text-center font-['JetBrains_Mono',monospace] text-[var(--foreground)]">Projects</h2>
+        <h2 className={`text-3xl font-bold mb-4 text-center font-['JetBrains_Mono',monospace] text-[var(--foreground)] underline underline-offset-8 section-title-variant${active ? " section-title-active" : ""}`}>Projects</h2>
         <div className="grid gap-8 sm:grid-cols-2">
           {projects.length === 0 ? (
             <div className="col-span-full text-center" style={{ color: "var(--foreground)", opacity: 0.7 }}>No projects data available.</div>

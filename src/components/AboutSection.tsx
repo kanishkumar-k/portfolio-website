@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
+/**
+ * About section with glassy, dark, blurred style and white text.
+ */
 const AboutSection: React.FC = () => {
   const [about, setAbout] = useState<{ description?: string }>({});
 
@@ -31,7 +34,7 @@ const AboutSection: React.FC = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
-        <h2 className="text-3xl font-bold mb-4 text-center font-['JetBrains_Mono',monospace] text-[var(--foreground)]">
+        <h2 className="text-3xl font-bold mb-4 text-center font-['JetBrains_Mono',monospace] text-[var(--foreground)] underline underline-offset-8 section-title-variant">
           About
         </h2>
         <p className="text-lg text-center" style={{ color: "var(--foreground)", opacity: 0.9 }}>

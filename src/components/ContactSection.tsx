@@ -1,19 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { FaLinkedin, FaGithub, FaMedium } from "react-icons/fa";
 
 type ContactInfo = {
-  email?: string;
-  phone?: string;
   linkedin?: string;
   github?: string;
+  medium?: string;
   name?: string;
   textColor?: string;
 };
 
 const ContactSection: React.FC = () => {
   const [contact, setContact] = useState<ContactInfo>({});
-
   useEffect(() => {
     fetch("/api/contact")
       .then((r) => r.json())
@@ -33,7 +32,9 @@ const ContactSection: React.FC = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
-        <h2 className="text-3xl font-bold mb-4 text-center font-['JetBrains_Mono',monospace] text-[var(--foreground)]">Contact</h2>
+        <h2 className="text-3xl font-bold mb-4 text-center font-['JetBrains_Mono',monospace] text-[var(--foreground)] underline underline-offset-8 section-title-variant">
+          Contact
+        </h2>
         <div className="flex flex-col items-center justify-center gap-4">
           {contact.name && (
             <div className="text-xl text-white font-semibold mb-2">{contact.name}</div>
@@ -41,50 +42,53 @@ const ContactSection: React.FC = () => {
           <div className="text-lg mb-4" style={{ color: "var(--foreground)" }}>
             Connect with me on:
           </div>
-          <div className="flex flex-wrap justify-center gap-6 text-base">
-            {contact.email && (
-              <a
-                href={`mailto:${contact.email}`}
-                className="contact-pill"
-                style={{
-                  borderColor: "#f9949c",
-                  color: "#f9949c",
-                }}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Email
-              </a>
-            )}
-            {contact.phone && (
-              <PhoneReveal phone={contact.phone} />
-            )}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-lg">
             {contact.linkedin && (
               <a
                 href={contact.linkedin}
-                className="contact-pill"
-                style={{
-                  borderColor: "#94d6f9",
-                  color: "#94d6f9",
-                }}
+                className="flex flex-col items-center bg-gradient-to-br from-[#94d6f9]/80 to-[#94d6f9]/40 rounded-xl p-5 shadow group hover:scale-105 transition-all"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                LinkedIn
+                <div className="mb-2 text-3xl text-[#0a66c2]">
+                  <FaLinkedin />
+                </div>
+                <span className="break-all font-semibold text-[#0a66c2] group-hover:underline">
+                  LinkedIn
+                </span>
+                <span className="mt-1 text-xs text-[#0a66c2] opacity-80">/in/kanishkumar-k</span>
               </a>
             )}
             {contact.github && (
               <a
                 href={contact.github}
-                className="contact-pill"
-                style={{
-                  borderColor: "#d477b7",
-                  color: "#d477b7",
-                }}
+                className="flex flex-col items-center bg-gradient-to-br from-[#181717]/80 to-[#181717]/40 rounded-xl p-5 shadow group hover:scale-105 transition-all text-white"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                GitHub
+                <div className="mb-2 text-3xl text-white transition-colors">
+                  <FaGithub />
+                </div>
+                <span className="break-all font-semibold text-white group-hover:underline transition-colors">
+                  GitHub
+                </span>
+                <span className="mt-1 text-xs text-white opacity-80 transition-colors">/kanishkumar-k</span>
+              </a>
+            )}
+            {contact.medium && (
+              <a
+                href={contact.medium}
+                className="flex flex-col items-center bg-gradient-to-br from-[#02b875]/80 to-[#02b875]/40 rounded-xl p-5 shadow group hover:scale-105 transition-all text-white"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div className="mb-2 text-3xl text-white transition-colors">
+                  <FaMedium />
+                </div>
+                <span className="break-all font-semibold text-white group-hover:underline transition-colors">
+                  Medium
+                </span>
+                <span className="mt-1 text-xs text-white opacity-80 transition-colors">/kanishkumar0409</span>
               </a>
             )}
           </div>
@@ -93,78 +97,5 @@ const ContactSection: React.FC = () => {
     </section>
   );
 };
-
-/**
- * PhoneReveal: reveals phone number on hover or tap, does not call.
- */
-function PhoneReveal({ phone }: { phone: string }) {
-  const [revealed, setRevealed] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (revealed) {
-      try {
-        await navigator.clipboard.writeText(phone);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 1200);
-      } catch {
-        // fallback: do nothing
-      }
-    } else {
-      setRevealed(true);
-    }
-  };
-
-  return (
-    <span
-      className="contact-pill cursor-pointer select-none"
-      style={{
-        borderColor: "#60ecc2",
-        color: "#60ecc2",
-        position: "relative",
-        minWidth: 80,
-        textAlign: "center",
-        userSelect: revealed ? "text" : "none",
-      }}
-      tabIndex={0}
-      onMouseEnter={() => setRevealed(true)}
-      onMouseLeave={() => { setRevealed(false); setCopied(false); }}
-      onFocus={() => setRevealed(true)}
-      onBlur={() => { setRevealed(false); setCopied(false); }}
-      onClick={handleCopy}
-      aria-label={revealed ? phone : "Show phone number"}
-      title={revealed ? "Click to copy" : "Show phone number"}
-    >
-      {revealed ? (
-        <>
-          {phone}
-          {copied && (
-            <span
-              style={{
-                position: "absolute",
-                top: "-1.8em",
-                left: "50%",
-                transform: "translateX(-50%)",
-                background: "#23272f",
-                color: "#60ecc2",
-                padding: "2px 10px",
-                borderRadius: "8px",
-                fontSize: "0.9em",
-                boxShadow: "0 2px 8px 0 rgba(0,0,0,0.12)",
-                zIndex: 10,
-                whiteSpace: "nowrap",
-              }}
-            >
-              Copied!
-            </span>
-          )}
-        </>
-      ) : (
-        "Phone"
-      )}
-    </span>
-  );
-}
 
 export default ContactSection;

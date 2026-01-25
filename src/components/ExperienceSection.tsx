@@ -13,6 +13,7 @@ interface Experience {
 const ExperienceSection: React.FC = () => {
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const { theme } = useTheme();
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
     fetch("/api/experience")
@@ -37,14 +38,18 @@ const ExperienceSection: React.FC = () => {
       className="w-full py-24 px-4 flex justify-center items-center relative bg-[var(--background)]"
     >
       <motion.div
-        className="section-card w-full max-w-3xl mx-auto backdrop-blur-lg bg-white/10 rounded-2xl shadow-2xl p-10 border border-white/20"
+        className={`section-card w-full max-w-3xl mx-auto backdrop-blur-lg bg-white/10 rounded-2xl shadow-2xl p-10 border border-white/20${active ? " section-card-active" : ""}`}
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
+        tabIndex={0}
+        onClick={() => setActive(true)}
+        onFocus={() => setActive(true)}
+        onBlur={() => setActive(false)}
       >
         <h2
-          className="text-3xl font-bold mb-4 text-center font-['JetBrains_Mono',monospace]"
+          className={`text-3xl font-bold mb-4 text-center font-['JetBrains_Mono',monospace] underline underline-offset-8 section-title-variant${active ? " section-title-active" : ""}`}
           style={{ color: theme === "light" ? "#111" : "var(--foreground)" }}
         >
           Experience
