@@ -90,4 +90,3 @@ const SnowEffect: React.FC<{ color?: string }> = ({ color = "#ea86a4" }) => {
 };
 
 export default SnowEffect;
-
