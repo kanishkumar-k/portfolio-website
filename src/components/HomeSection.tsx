@@ -81,7 +81,7 @@ const HomeSection: React.FC = () => {
       <div className="absolute inset-0 z-0 pointer-events-none">
         <CodeParticlesEffect />
         {mounted && (
-          <SnowEffect color={theme === "light" ? "#ec4899" : "#ffffff"} />
+          <SnowEffect color={theme === "dark" ? "#fff": "#ec4899"} />
         )}
       </div>
 
@@ -138,7 +138,7 @@ const HomeSection: React.FC = () => {
             px-8 py-3 rounded-full shadow-xl font-semibold
             transition-all duration-300
             ${loading ? "cursor-wait bg-gray-400" : "bg-white hover:scale-105 active:scale-95"}
-            ${theme === "dark" ? "text-black border-2 border-teal-400" : "text-[#101624] border-2 border-pink-400"}
+            ${theme === "dark" ? "text-black border-2 border-pink-500" : "text-[#101624] border-2 border-pink-400"}
             flex items-center justify-center gap-2
           `}
           style={{
