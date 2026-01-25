@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useTheme } from "./ThemeProvider";
+import SectionNavigator from "./SectionNavigator";
 
 const NAV_LINKS = [
   { href: "#home", label: "Home" },
@@ -12,7 +13,6 @@ const NAV_LINKS = [
   { href: "#medium-blogs", label: "Blogs" },
   { href: "#contact", label: "Contact" },
 ];
-
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -35,7 +35,7 @@ export default function Navbar() {
         theme === "dark" ? "bg-black text-white" : "bg-white text-black"
       } backdrop-blur`}
     >
-      <div className="max-w-4xl mx-auto flex items-center px-6 py-3 relative">
+      <div className="max-w-4xl mx-auto flex items-center px-6 py-5 relative">
         {/* Hamburger for mobile */}
         <button
           className="md:hidden flex items-center justify-center w-10 h-10 text-white focus:outline-none"
@@ -57,22 +57,31 @@ export default function Navbar() {
             )}
           </svg>
         </button>
-        {/* Desktop nav */}
-        <ul className="hidden md:flex space-x-2 text-base font-medium justify-end flex-1">
-          {NAV_LINKS.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className={`nav-cool-link font-bold px-3 py-1 rounded-lg transition-all duration-200
-                  ${active === link.href ? "nav-cool-link-active" : ""}
-                `}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-        {/* Mobile nav dropdown */}
+
+        {/* Desktop nav links, right-aligned */}
+        <div className="hidden md:flex flex-1 justify-end pr-8">
+          <ul className="flex space-x-2 text-base font-medium">
+            {NAV_LINKS.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className={`nav-cool-link font-bold px-3 py-1 rounded-lg transition-all duration-200
+                    ${active === link.href ? "nav-cool-link-active" : ""}
+                  `}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Mobile: SectionNavigator only, in navbar (not duplicated) */}
+        <div className="flex md:hidden flex-1 justify-end items-center">
+          <SectionNavigator navbarMode />
+        </div>
+
+        {/* Mobile nav dropdown (for nav links) */}
         {mobileOpen && (
           <ul
             className={`absolute top-full left-0 w-full border-b border-[#e5e7eb] flex flex-col items-start py-2 px-6 md:hidden animate-fade-in-down shadow-lg ${

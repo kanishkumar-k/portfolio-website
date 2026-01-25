@@ -2,16 +2,28 @@
 import React from "react";
 import { useTheme } from "./ThemeProvider";
 
-export default function ThemeToggleButton() {
+interface ThemeToggleButtonProps {
+  inline?: boolean;
+}
+
+export default function ThemeToggleButton({ inline = false }: ThemeToggleButtonProps) {
   const { theme, toggleTheme } = useTheme();
 
   return (
     <button
       aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
-      className="fixed bottom-4 left-4 z-50 bg-[#23272f]/80 rounded-full shadow-lg p-3 flex items-center justify-center transition-all border border-[#b3c0f7] hover:bg-[#b3c0f7]/20 focus:outline-none focus:ring-2 focus:ring-white"
+      className={
+        inline
+          ? "bg-[#23272f]/80 rounded-full shadow p-2 flex items-center justify-center transition-all border border-[#b3c0f7] hover:bg-[#b3c0f7]/20 focus:outline-none focus:ring-2 focus:ring-white"
+          : "fixed bottom-4 left-4 z-50 bg-[#23272f]/80 rounded-full shadow-lg p-3 flex items-center justify-center transition-all border border-[#b3c0f7] hover:bg-[#b3c0f7]/20 focus:outline-none focus:ring-2 focus:ring-white"
+      }
       onClick={toggleTheme}
       tabIndex={0}
-      style={{ width: 56, height: 56, cursor: "pointer" }}
+      style={
+        inline
+          ? { width: 40, height: 40, cursor: "pointer", position: "static" }
+          : { width: 56, height: 56, cursor: "pointer" }
+      }
     >
       {theme === "light" ? (
         // Owl SVG (light mode)
