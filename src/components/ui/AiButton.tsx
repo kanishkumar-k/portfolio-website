@@ -70,9 +70,10 @@ const AiButton: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [aiGenerated, setAiGenerated] = useState(false);
 
-  const { theme } = useTheme();
-  const { openPanel, setOpenPanel } = useUiPanel();
-  const open = openPanel === "email";
+const { theme } = useTheme(); // Get theme context
+const isDark = theme === "dark"; // Determine if dark mode is active
+const { openPanel, setOpenPanel } = useUiPanel();
+const open = openPanel === "email";
 
   const [error, setError] = useState<string | null>(null);
 
@@ -114,7 +115,6 @@ const AiButton: React.FC = () => {
   };
 
   // Theme-based styles
-  const isDark = theme === "dark";
   const buttonColor =
     isDark
       ? "bg-[#ec4899] text-white hover:bg-[#f472b6]"
@@ -242,28 +242,52 @@ fetch("/api/generate-email-body", {
                   </div>
                 )}
                 <div className="w-full">
-                  <div className="flex items-center justify-between mb-2" style={{ minHeight: 32 }}>
-                    <label
-                      className="block text-base font-medium"
-                      style={{ color: labelColor }}
-                      htmlFor="ai-body-switch"
-                    >
-                      {aiMode ? "Context / Input" : "Body"}
-                    </label>
-                    <Switch
-                      id="ai-body-switch"
-                      checked={aiMode}
-                      onChange={(e) => {
-                        const checked = e.target.checked;
-                        setAiMode(checked);
-                        setAiError(null);
-                        // Do not trigger AI generation here; only enable AI mode.
-                      }}
-                      disabled={aiLoading}
-                      inputProps={{ "aria-label": "Enable AI email draft" }}
-                      sx={switchSx}
-                    />
-                  </div>
+<div className="flex items-center justify-between mb-2" style={{ minHeight: 32 }}>
+  <label
+    className="block text-base font-medium"
+    style={{ color: labelColor }}
+    htmlFor="ai-body-switch"
+  >
+    {aiMode ? "Context / Input" : "Body"}
+  </label>
+  <div className="flex items-center gap-2">
+    {/* Manual mode label, color from theme context */}
+    <span
+      className="text-sm font-semibold"
+      style={{
+        minWidth: 48,
+        textAlign: "right",
+        color: isDark ? "#fff" : "#000"
+      }}
+    >
+      Manual
+    </span>
+    <Switch
+      id="ai-body-switch"
+      checked={aiMode}
+      onChange={(e) => {
+        const checked = e.target.checked;
+        setAiMode(checked);
+        setAiError(null);
+        // Do not trigger AI generation here; only enable AI mode.
+      }}
+      disabled={aiLoading}
+      inputProps={{ "aria-label": "Enable AI email draft" }}
+      sx={switchSx}
+    />
+    {/* AI mode label, color from theme context */}
+    <span
+      className="text-sm font-semibold"
+      style={{
+        minWidth: 32,
+        textAlign: "left",
+        color: isDark ? "#fff" : "#000"
+      }}
+    >
+      AI
+    </span>
+  </div>
+</div>
                   {aiMode ? (
                     <>
                       <div className="relative mb-2">
@@ -464,7 +488,16 @@ fetch("/api/generate-email-body", {
                       {aiMode ? "Context / Input" : "Body"}
                     </label>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-black" style={{ minWidth: 48, textAlign: "right" }}>Manual</span>
+                    <span
+                      className="text-sm font-semibold"
+                      style={{
+                        minWidth: 48,
+                        textAlign: "right",
+                        color: isDark ? "#ffffff" : "#000"
+                      }}
+                    >
+                      Manual
+                    </span>
                       <Switch
                         id="ai-body-switch-desktop"
                         checked={aiMode}
@@ -478,7 +511,17 @@ onChange={(e) => {
                         inputProps={{ "aria-label": "Enable AI email draft" }}
                         sx={switchSx}
                       />
-                      <span className="text-sm font-semibold text-black" style={{ minWidth: 32, textAlign: "left" }}>AI</span>
+{/* AI mode label, color from theme context */}
+<span
+  className="text-sm font-semibold"
+  style={{
+    minWidth: 32,
+    textAlign: "left",
+    color: isDark ? "#fff" : "#000"
+  }}
+>
+  AI
+</span>
                     </div>
                   </div>
                   {aiMode ? (
