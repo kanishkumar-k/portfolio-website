@@ -5,6 +5,7 @@ import ExperienceSection from "../components/ExperienceSection";
 import ProjectsSection from "../components/ProjectsSection";
 import GitHubShowcaseSection from "../components/GitHubShowcaseSection";
 import MediumBlogsSection from "../components/MediumBlogsSection";
+import PublicationsSection from "../components/PublicationsSection";
 import ContactSection from "../components/ContactSection";
 import SectionSeparator from "../components/ui/SectionSeparator";
 import Footer from "../components/ui/Footer";
@@ -28,6 +29,8 @@ export default function Home() {
       <SectionSeparator color="#2a2d34" />
       <MediumBlogsSection />
       <SectionSeparator color="#353942" flip />
+      <PublicationsSection />
+      <SectionSeparator color="#23272f" />
       <ContactSection />
       <Footer />
     </div>

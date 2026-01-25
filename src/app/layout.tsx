@@ -3,9 +3,11 @@ import { JetBrains_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import ClientRoot from "../components/ui/ClientRoot";
 import SectionNavigator from "../components/ui/SectionNavigator";
+import MobileSidebar from "../components/ui/MobileSidebar";
 import { ThemeProvider } from "../components/ui/ThemeProvider";
-import ScrollbarToggleButton from "../components/ui/ScrollbarToggleButton";
+import { UiPanelProvider } from "../components/ui/UiPanelContext";
 import WelcomeModal from "../components/ui/WelcomeModal";
+import Navbar from "../components/ui/Navbar";
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
@@ -53,12 +55,15 @@ export default function RootLayout({
         }}
       >
         <ThemeProvider>
-          <WelcomeModal />
-          <ClientRoot>
+          <UiPanelProvider>
+            <WelcomeModal />
+            <Navbar />
+            <MobileSidebar />
+            <ClientRoot>
+              {children}
+            </ClientRoot>
             <SectionNavigator />
-            {children}
-          </ClientRoot>
-          <ScrollbarToggleButton />
+          </UiPanelProvider>
         </ThemeProvider>
       </body>
     </html>

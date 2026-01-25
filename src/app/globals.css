@@ -60,6 +60,34 @@ html.dark .section-card {
   z-index: 2;
 }
 
+/* Active section card glow: pink for dark, yellow for light */
+.section-card-active {
+  box-shadow: 0 0 24px 6px #ec4899, 0 8px 36px 0 rgba(236,72,153,0.18) !important;
+  border: 2.5px solid #ec4899 !important;
+  z-index: 3;
+  transition: box-shadow 0.25s, border 0.18s;
+}
+html:not(.dark) .section-card-active {
+  box-shadow: 0 0 24px 6px #fbbf24, 0 8px 36px 0 rgba(251,191,36,0.18) !important;
+  border: 2.5px solid #fbbf24 !important;
+}
+
+/* Section title underline: pink for dark, yellow for light */
+.section-title-variant {
+  text-decoration-color: #ec4899 !important;
+}
+html:not(.dark) .section-title-variant {
+  text-decoration-color: #fbbf24 !important;
+}
+
+/* Active section title underline: pink for dark, yellow for light */
+.section-title-active {
+  text-decoration-color: #ec4899 !important;
+}
+html:not(.dark) .section-title-active {
+  text-decoration-color: #fbbf24 !important;
+}
+
 /* Silver glowing effect for section cards */
 .section-card {
   position: relative;
@@ -70,8 +98,15 @@ html.dark .section-card {
 .section-card:hover,
 .section-card:focus-within,
 .section-card:active {
-  box-shadow: 0 0 16px 4px #c0c0c0, 0 6px 32px 0 rgba(0,0,0,0.16);
-  border: 2.5px solid #c0c0c0;
+  box-shadow: 0 0 24px 6px #ec4899, 0 8px 36px 0 rgba(236,72,153,0.18);
+  border: 2.5px solid #ec4899;
+  z-index: 2;
+}
+html:not(.dark) .section-card:hover,
+html:not(.dark) .section-card:focus-within,
+html:not(.dark) .section-card:active {
+  box-shadow: 0 0 24px 6px #fbbf24, 0 8px 36px 0 rgba(251,191,36,0.18);
+  border: 2.5px solid #fbbf24;
   z-index: 2;
 }
 
@@ -131,7 +166,7 @@ html.dark .section-card {
   content: "";
   position: absolute;
   left: 50%;
-  bottom: 0.18em;
+  bottom: -0.3em;
   transform: translateX(-50%) scaleX(0);
   width: 80%;
   height: 3px;
@@ -159,4 +194,31 @@ html.dark .section-card {
 .nav-cool-link-active::after {
   transform: translateX(-50%) scaleX(1);
   background: linear-gradient(90deg, #ec4899 0%, #f472b6 100%);
+}
+
+/* Light theme: yellow underline and glow for nav links */
+html:not(.dark) .nav-cool-link:hover,
+html:not(.dark) .nav-cool-link:focus-visible {
+  color: #fff;
+  background: #fbbf24 !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 2px 8px 0 rgba(251,191,36,0.18) !important;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+}
+html:not(.dark) .nav-cool-link::after {
+  background: linear-gradient(90deg, #fbbf24 0%, #fde68a 100%);
+  height: 4px;
+}
+html:not(.dark) .nav-cool-link:hover::after,
+html:not(.dark) .nav-cool-link:focus-visible::after {
+  background: linear-gradient(90deg, #fbbf24 0%, #fde68a 100%);
+  height: 4px;
+}
+html:not(.dark) .nav-cool-link-active {
+  color: #fbbf24;
+  background: rgba(251,191,36,0.10);
+}
+html:not(.dark) .nav-cool-link-active::after {
+  background: linear-gradient(90deg, #fbbf24 0%, #fde68a 100%);
+  height: 4px;
 }
