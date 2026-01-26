@@ -1,0 +1,16 @@
+[
+  {
+    "type": "College",
+    "name": "College Name",
+    "degree": "Your Degree Name",
+    "year": "2020 -2024",
+    "cgpa": "9.2/10"
+  },
+  {
+    "type": "School",
+    "name": "School Name",
+    "degree": "High School",
+    "year": "2018 - 2020",
+    "percentage": "95%"
+  }
+]

@@ -1,0 +1,9 @@
+[
+  {
+    "name": "Example Certification",
+    "achieved_month": "January",
+    "achieved_year": "2024",
+    "image": "/images/cert-example.jpg",
+    "description": "Description of the certification."
+  }
+]

@@ -1,27 +1,9 @@
 [
   {
-    "title": "LangGraph Fastapi project builder agent",
-    "description": "Updating...",
-    "link": "https://example.com/"
-  },
-  {
-    "title": "Multi-model Cyberbullying detection and Prevention",
-    "description": "Updating...",
-    "link": "https://example.com/"
-  },
-  {
-    "title": "E-learning FullStack Application",
-    "description": "Updating...",
-    "link": "https://example.com/"
-  },
-  {
-    "title": "College Management System - Full Stack",
-    "description": "Updating...",
-    "link": "https://example.com/"
-  },
-  {
-    "title": "E- Railway Ticket Booking System",
-    "description": "Updating...",
-    "link": "https://example.com/"
+    "title": "Portfolio Website",
+    "description": "A personal portfolio website to showcase my projects and skills.",
+    "link": "https://example.com",
+    "image": "/images/admin-bg.jpg",
+    "type": "ui"
   }
 ]
