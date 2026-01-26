@@ -19,5 +19,12 @@
     "link": "https://college-management-system-frontend.vercel.app/",
     "type": "full stack",
     "image": "/images/college_management_lms_system.png"
+  },
+  {
+    "title": "Personal portfolio with a Headless CMS approach",
+    "description": "Portfolio site with headless CMS style configuration and AI enabled email drafter",
+    "link": "https://kanishkumar-k.vercel.app/",
+    "type": "ai/ml",
+    "image": "/images/personal_portfolio_with_headless.png"
   }
 ]
