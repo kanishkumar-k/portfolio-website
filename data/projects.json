@@ -25,6 +25,12 @@
     "description": "Portfolio site with headless CMS style configuration and AI enabled email drafter",
     "link": "https://kanishkumar-k.vercel.app/",
     "type": "ai/ml",
-    "image": "/images/personal_portfolio_with_headless.png"
+    "image": "/images/personal_portfolio_with_a_headless_cms_approach.png"
+  },
+  {
+    "title": "React eLearning Site",
+    "description": "Application where users can sign up and learn React concepts and view example projects and track learners login pattern",
+    "link": "https://github.com/kanishkumar-k/django-react-e-learning-webapp",
+    "type": "full stack"
   }
 ]
