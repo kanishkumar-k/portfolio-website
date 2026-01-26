@@ -31,6 +31,13 @@
     "title": "React eLearning Site",
     "description": "Application where users can sign up and learn React concepts and view example projects and track learners login pattern",
     "link": "https://github.com/kanishkumar-k/django-react-e-learning-webapp",
-    "type": "full stack"
+    "type": "full stack",
+    "image": "/images/react_elearning_site.png"
+  },
+  {
+    "title": "Railway eTicket Booking system",
+    "description": "Railway Reservation System with real-time booking, email notifications and automated data backup with cron jobs",
+    "link": "https://github.com/kanishkumar-k/eRailway-serv",
+    "type": "backend"
   }
 ]
