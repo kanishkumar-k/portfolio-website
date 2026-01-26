@@ -1,9 +1,9 @@
 [
   {
-    "name": "Example Certification",
-    "achieved_month": "January",
-    "achieved_year": "2024",
+    "name": "AWS Certified cloud Practitioner",
+    "achieved_month": "September",
+    "achieved_year": "2025",
     "image": "/images/cert-example.jpg",
-    "description": "Description of the certification."
+    "description": ""
   }
 ]
