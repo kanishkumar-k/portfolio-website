@@ -17,6 +17,7 @@
     "title": "College Management LMS system",
     "description": "Django REST framework and React based LMS for student and faculty to track their subjects and grades",
     "link": "https://college-management-system-frontend.vercel.app/",
-    "type": "full stack"
+    "type": "full stack",
+    "image": "/images/college_management_lms_system.png"
   }
 ]
