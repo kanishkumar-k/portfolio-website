@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     const today = new Date().toISOString().slice(0, 10);
     if (!aiAttemptStore[today]) aiAttemptStore[today] = 0;
     if (aiAttemptStore[today] >= 3) {
-      return NextResponse.json({ error: "Limit reached. Use manual way to send mail" }, { status: 429 });
+      return NextResponse.json({ error: "AI support is temporarily not available" }, { status: 429 });
     }
     if (!GEMINI_API_KEY) {
       return NextResponse.json({ error: "API Key not set due to limited access" }, { status: 500 });
@@ -55,7 +55,21 @@ Body: <email body, 2 lines>
     aiAttemptStore[today] += 1;
 
     if (!geminiRes.ok) {
-      const errorMsg = await geminiRes.text();
+      let errorMsg = "";
+      let errorCode = geminiRes.status;
+      try {
+        const errorJson = await geminiRes.json();
+        errorMsg = errorJson?.error?.message || JSON.stringify(errorJson);
+      } catch {
+        errorMsg = await geminiRes.text();
+      }
+      // If error code starts with 4 or 5, show AI support unavailable
+      if (errorCode >= 400 && errorCode < 600) {
+        return NextResponse.json(
+          { error: "AI support is temporarily not available" },
+          { status: 503 }
+        );
+      }
       return NextResponse.json({ error: "Gemini API error: " + errorMsg }, { status: 500 });
     }
 
