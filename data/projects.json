@@ -1,9 +1,9 @@
 [
   {
-    "title": "Portfolio Website",
-    "description": "A personal portfolio website to showcase my projects and skills.",
-    "link": "https://example.com",
-    "image": "/images/admin-bg.jpg",
-    "type": "ui"
+    "title": "AI powered FastAPI application builder",
+    "description": "FastAPI application builder using langGraph and real-time node monitoring with langSmith",
+    "link": "https://github.com/kanishkumar-k/langgraph-fastapi-project-builder",
+    "image": "/images/ai_powered_fastapi_application_builder.png",
+    "type": "ai/ml"
   }
 ]
