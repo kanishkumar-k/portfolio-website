@@ -46,5 +46,11 @@
     "link": "",
     "type": "freelance",
     "image": "/images/cms_website_for_a_charity.png"
+  },
+  {
+    "title": "Simple Restaurant theme application",
+    "description": "UI focused Restaurant theme application with simple localStorage Sign In",
+    "link": "https://fdfoods.netlify.app/",
+    "type": "ui"
   }
 ]
