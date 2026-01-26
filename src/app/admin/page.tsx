@@ -26,6 +26,7 @@ interface Project {
   image?: string;
   imageFile?: File;
   imagePreview?: string;
+  type?: string;
 }
 
 interface Blog {
@@ -103,6 +104,193 @@ function Modal({ open, onClose, children }: { open: boolean; onClose: () => void
         >×</button>
         {children}
       </div>
+    </div>
+  );
+}
+
+/**
+ * Certifications Admin Section
+ */
+function CertificationsAdminSection() {
+  const [certs, setCerts] = useState<any[]>([]);
+  const [edit, setEdit] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/certifications")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) setCerts(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const handleCertChange = (idx: number, field: string, value: string) => {
+    setCerts((prev) =>
+      prev.map((c, i) => (i === idx ? { ...c, [field]: value } : c))
+    );
+  };
+
+  const handleAddCert = () => {
+    setCerts((prev) => [
+      ...prev,
+      {
+        name: "",
+        achieved_month: "",
+        achieved_year: "",
+        image: "",
+        description: "",
+      },
+    ]);
+  };
+
+  const handleRemoveCert = (idx: number) => {
+    setCerts((prev) => prev.filter((_, i) => i !== idx));
+  };
+
+  const handleImageUpload = async (idx: number, file: File) => {
+    // Reuse the /api/projects/image endpoint for image upload
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("title", certs[idx].name || "certification");
+    const res = await fetch("/api/projects/image", {
+      method: "POST",
+      body: formData,
+    });
+    const result = await res.json();
+    if (result.image) {
+      setCerts((prev) =>
+        prev.map((c, i) => (i === idx ? { ...c, image: result.image } : c))
+      );
+    }
+  };
+
+  const handleSave = async () => {
+    await fetch("/api/github-update", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        filePath: "data/certifications.json",
+        json: certs,
+        commitMessage: "Update certifications.json via admin",
+      }),
+    });
+    setEdit(false);
+  };
+
+  return (
+    <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col gap-2 border md:col-span-2">
+      <h3 className="text-xl font-bold mb-2 text-blue-700">Certifications Section</h3>
+      {loading ? (
+        <div className="text-gray-500">Loading...</div>
+      ) : edit ? (
+        <div>
+          {certs.map((cert, idx) => (
+            <div key={idx} className="flex flex-col md:flex-row md:items-center gap-2 mb-6 p-4 border border-gray-200 rounded-lg bg-white shadow">
+              <input
+                className="p-2 rounded bg-gray-100 border"
+                value={cert.name || ""}
+                placeholder="Certification Name"
+                onChange={(e) => handleCertChange(idx, "name", e.target.value)}
+              />
+              <input
+                className="p-2 rounded bg-gray-100 border"
+                value={cert.achieved_month || ""}
+                placeholder="Achieved Month"
+                onChange={(e) => handleCertChange(idx, "achieved_month", e.target.value)}
+              />
+              <input
+                className="p-2 rounded bg-gray-100 border"
+                value={cert.achieved_year || ""}
+                placeholder="Achieved Year"
+                onChange={(e) => handleCertChange(idx, "achieved_year", e.target.value)}
+              />
+              <input
+                className="p-2 rounded bg-gray-100 border"
+                value={cert.description || ""}
+                placeholder="Description"
+                onChange={(e) => handleCertChange(idx, "description", e.target.value)}
+              />
+              <div className="flex flex-col gap-1 w-full">
+                <label className="font-semibold">Image</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="p-2 rounded bg-gray-100 border"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      await handleImageUpload(idx, file);
+                    }
+                  }}
+                />
+                {cert.image && (
+                  <img
+                    src={cert.image}
+                    alt="Certification"
+                    style={{ maxWidth: 120, borderRadius: 8, marginTop: 4 }}
+                  />
+                )}
+              </div>
+              <button
+                className="bg-red-600 px-2 py-1 rounded text-white hover:bg-red-700"
+                onClick={() => handleRemoveCert(idx)}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            className="bg-blue-600 px-4 py-1 rounded mb-2 text-white hover:bg-blue-700"
+            onClick={handleAddCert}
+          >
+            Add Certification
+          </button>
+          <div className="flex gap-2 mt-2">
+            <button
+              className="bg-green-600 px-4 py-1 rounded text-white hover:bg-green-700"
+              onClick={handleSave}
+            >
+              Save
+            </button>
+            <button
+              className="bg-gray-600 px-4 py-1 rounded text-white hover:bg-gray-700"
+              onClick={() => setEdit(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <ul>
+            {certs.map((cert, idx) => (
+              <li key={idx} className="flex items-center gap-2">
+                <span>
+                  {cert.name} ({cert.achieved_month} {cert.achieved_year})
+                  {cert.description && (
+                    <span className="block text-gray-600 text-sm">{cert.description}</span>
+                  )}
+                </span>
+                {cert.image && (
+                  <img
+                    src={cert.image}
+                    alt="Certification"
+                    style={{ maxWidth: 60, borderRadius: 8, marginLeft: 8 }}
+                  />
+                )}
+              </li>
+            ))}
+          </ul>
+          <button
+            className="bg-blue-600 px-4 py-1 rounded mt-2 text-white hover:bg-blue-700"
+            onClick={() => setEdit(true)}
+          >
+            Edit
+          </button>
+        </>
+      )}
     </div>
   );
 }
@@ -1027,6 +1215,19 @@ setTempData({
                         placeholder="Link"
                         onChange={(e) => handleProjectChange(idx, "link", e.target.value)}
                       />
+                      <select
+                        className="p-2 rounded bg-gray-100 border"
+                        value={proj.type || ""}
+                        onChange={(e) => handleProjectChange(idx, "type", e.target.value)}
+                      >
+                        <option value="">Select Type</option>
+                        <option value="backend">Backend</option>
+                        <option value="ui">UI</option>
+                        <option value="full stack">Full Stack</option>
+                        <option value="ai/ml">AI/ML</option>
+                        <option value="freelance">Freelance</option>
+                        <option value="others">Others</option>
+                      </select>
                       <div className="flex flex-col gap-1 w-full">
                         <label className="font-semibold">Image</label>
                         <input
@@ -1123,14 +1324,33 @@ setTempData({
                 </div>
               ) : (
                 <>
+                  <div className="mb-2 flex flex-wrap gap-2">
+                    <span className="font-semibold">Filter by Type:</span>
+                    <button className="px-2 py-1 rounded border" onClick={() => setTempData({ ...tempData, projectTypeFilter: "all" })}>All</button>
+                    <button className="px-2 py-1 rounded border" onClick={() => setTempData({ ...tempData, projectTypeFilter: "backend" })}>Backend</button>
+                    <button className="px-2 py-1 rounded border" onClick={() => setTempData({ ...tempData, projectTypeFilter: "ui" })}>UI</button>
+                    <button className="px-2 py-1 rounded border" onClick={() => setTempData({ ...tempData, projectTypeFilter: "full stack" })}>Full Stack</button>
+                    <button className="px-2 py-1 rounded border" onClick={() => setTempData({ ...tempData, projectTypeFilter: "ai/ml" })}>AI/ML</button>
+                    <button className="px-2 py-1 rounded border" onClick={() => setTempData({ ...tempData, projectTypeFilter: "freelance" })}>Freelance</button>
+                    <button className="px-2 py-1 rounded border" onClick={() => setTempData({ ...tempData, projectTypeFilter: "others" })}>Others</button>
+                  </div>
                   <ul>
-                    {(data.projects || []).map((proj: any, idx: number) => (
-                      <li key={idx} className="flex items-center gap-2">
-                        <span>
-                          {proj.title} - {proj.description} (<a href={proj.link} target="_blank" rel="noopener noreferrer" className="text-blue-700 underline">Link</a>)
-                        </span>
-                      </li>
-                    ))}
+                    {(data.projects || [])
+                      .filter((proj: any) =>
+                        !tempData.projectTypeFilter || tempData.projectTypeFilter === "all"
+                          ? true
+                          : (proj.type || "").toLowerCase() === tempData.projectTypeFilter
+                      )
+                      .map((proj: any, idx: number) => (
+                        <li key={idx} className="flex items-center gap-2">
+                          <span>
+                            {proj.title} - {proj.description} (<a href={proj.link} target="_blank" rel="noopener noreferrer" className="text-blue-700 underline">Link</a>)
+                            {proj.type && (
+                              <span className="ml-2 px-2 py-0.5 rounded bg-gray-200 text-xs font-semibold">{proj.type.toUpperCase()}</span>
+                            )}
+                          </span>
+                        </li>
+                      ))}
                   </ul>
                   <button className="bg-blue-600 px-4 py-1 rounded mt-2 text-white hover:bg-blue-700" onClick={handleProjectsEdit}>Edit</button>
                 </>
@@ -1329,6 +1549,8 @@ setTempData({
                 </>
               )}
             </div>
+            {/* Certifications Section */}
+            <CertificationsAdminSection />
             {/* Contact Section */}
             <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col gap-2 border">
               <h3 className="text-xl font-bold mb-2 text-blue-700">Contact Section</h3>
