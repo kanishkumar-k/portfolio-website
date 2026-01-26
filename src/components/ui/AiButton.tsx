@@ -188,13 +188,18 @@ fetch("/api/generate-email-body", {
                 position: "relative",
               }}
             >
-              {/* Back button */}
+              {/* Close (X) button for mobile */}
               <button
-                className="absolute top-4 left-4 px-4 py-2 rounded-lg font-semibold bg-red-500 text-white hover:bg-red-600 transition-all"
+                className={`absolute top-4 right-4 z-50 p-2 rounded-full shadow-lg transition-all
+                  ${isDark ? "bg-[#23272f] text-white hover:bg-[#181c23]" : "bg-gray-200 text-black hover:bg-gray-300"}`}
                 onClick={() => setOpenPanel("none")}
                 type="button"
+                aria-label="Close"
+                style={{ width: 40, height: 40, display: "flex", alignItems: "center", justifyContent: "center" }}
               >
-                Back
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                  <path d="M7 7l14 14M7 21L21 7" stroke={isDark ? "#fff" : "#222"} strokeWidth="2.5" strokeLinecap="round"/>
+                </svg>
               </button>
               <h3
                 className="text-2xl font-bold mb-6 text-center"
@@ -248,7 +253,7 @@ fetch("/api/generate-email-body", {
     style={{ color: labelColor }}
     htmlFor="ai-body-switch"
   >
-    {aiMode ? "Context / Input" : "Body"}
+    {aiMode ? "What do you want to say?" : "Body"}
   </label>
   <div className="flex items-center gap-2">
     {/* Manual mode label, color from theme context */}
@@ -327,15 +332,19 @@ fetch("/api/generate-email-body", {
                       {aiGenerated && (
                         <div className="mb-2">
                           <label className="block text-base font-medium mb-1" style={{ color: labelColor }}>
-                            Generated Subject
+                            Subject (editable)
                           </label>
-                          <div className={`w-full px-3 py-2 border rounded ${inputColor} bg-opacity-60`}>
-                            <span className="font-semibold">{subject}</span>
-                          </div>
+                          <input
+                            type="text"
+                            value={subject}
+                            onChange={e => setSubject(e.target.value)}
+                            className={`w-full px-3 py-2 border rounded ${inputColor} bg-opacity-60`}
+                            placeholder="Edit subject"
+                          />
                         </div>
                       )}
                       <label className="block text-base font-medium mb-1" style={{ color: labelColor }}>
-                        Output
+                        Suggested Email
                       </label>
                       <textarea
                         value={body}
@@ -394,14 +403,20 @@ fetch("/api/generate-email-body", {
                 <div className="flex flex-row gap-4 w-full mt-2">
                   <button
                     type="button"
-                    className="flex-1 py-2 rounded-lg font-semibold bg-red-500 text-white hover:bg-red-600 transition-all"
-                    onClick={() => setOpenPanel("none")}
+                    className="flex-1 py-2 rounded-lg font-semibold bg-red-200 text-red-800 hover:bg-red-300 transition-all"
+                    onClick={() => {
+                      setFrom("");
+                      setSubject("");
+                      setBody("");
+                      setAiGenerated(false);
+                      setAiError(null);
+                    }}
                   >
-                    Back
+                    Clear
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 py-2 rounded-lg font-semibold bg-green-500 text-white hover:bg-green-600 transition-all"
+                    className="flex-1 py-2 rounded-lg font-semibold bg-green-200 text-green-800 hover:bg-green-300 transition-all"
                     disabled={submitted}
                   >
                     {submitted ? "Sent!" : "Send"}
@@ -485,7 +500,7 @@ fetch("/api/generate-email-body", {
                       style={{ color: labelColor }}
                       htmlFor="ai-body-switch-desktop"
                     >
-                      {aiMode ? "Context / Input" : "Body"}
+                      {aiMode ? "What do you want to say?" : "Body"}
                     </label>
                     <div className="flex items-center gap-2">
                     <span
@@ -564,9 +579,13 @@ onChange={(e) => {
                             }}
                           />
                         ) : (
-                          <div className={`w-full px-3 py-4 border rounded pr-10 ${inputColor} bg-opacity-60`} style={{ background: isDark ? "#23272f" : "#f3f4f6" }}>
-                            <span className="font-semibold">{subject}</span>
-                          </div>
+                          <input
+                            type="text"
+                            value={subject}
+                            onChange={e => setSubject(e.target.value)}
+                            className={`w-full px-3 py-4 border rounded pr-10 ${inputColor} bg-opacity-60`}
+                            placeholder="Edit subject"
+                          />
                         )}
                         <button
                           type="button"
@@ -586,7 +605,7 @@ onChange={(e) => {
                         </button>
                       </div>
                       <label className="block text-base font-medium mb-1" style={{ color: labelColor }}>
-                        Output
+                        Suggested Email
                       </label>
                       <textarea
                         value={body}
@@ -625,14 +644,20 @@ onChange={(e) => {
                 <div className="flex flex-row gap-4 mt-2">
                   <button
                     type="button"
-                    className="flex-1 py-2 rounded-lg font-semibold bg-red-500 text-white hover:bg-red-600 transition-all"
-                    onClick={() => setOpenPanel("none")}
+                    className="flex-1 py-2 rounded-lg font-semibold bg-red-200 text-red-800 hover:bg-red-300 transition-all"
+                    onClick={() => {
+                      setFrom("");
+                      setSubject("");
+                      setBody("");
+                      setAiGenerated(false);
+                      setAiError(null);
+                    }}
                   >
-                    Back
+                    Clear
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 py-2 rounded-lg font-semibold bg-green-500 text-white hover:bg-green-600 transition-all"
+                    className="flex-1 py-2 rounded-lg font-semibold bg-green-200 text-green-800 hover:bg-green-300 transition-all"
                     disabled={submitted}
                   >
                     {submitted ? "Sent!" : "Send"}

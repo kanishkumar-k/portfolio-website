@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useTheme } from "./ThemeProvider";
 import MobileThemeSwitch from "./MobileThemeSwitch";
+import { useUiPanel } from "./UiPanelContext";
 
 const NAV_LINKS = [
   { href: "#home", label: "Home" },
@@ -17,10 +18,17 @@ const NAV_LINKS = [
 /**
  * MobileSidebar renders a hamburger button and a sliding sidebar menu for mobile navigation.
  */
+
 const MobileSidebar: React.FC = () => {
+  const { openPanel } = useUiPanel();
   const [open, setOpen] = useState(false);
   const { theme } = useTheme();
   const [active, setActive] = useState<string>("");
+  const [mounted, setMounted] = useState(false);
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+  const hideSidebar = mounted && openPanel === "email";
 
   // Set sidebar bg/text based on theme
   const sidebarBg = theme === "dark" ? "bg-[#23272f] text-white" : "bg-white text-black";
@@ -44,7 +52,9 @@ const MobileSidebar: React.FC = () => {
       {/* Top bar: hamburger left, theme toggle right (mobile only) */}
       <div
         className={`fixed top-0 left-0 w-full flex items-center px-4 z-[100] md:hidden pointer-events-none
-          ${theme === "dark" ? "bg-[#23272f] shadow-lg" : "bg-white shadow-lg"}`}
+          ${theme === "dark" ? "bg-[#23272f] shadow-lg" : "bg-white shadow-lg"}
+          ${hideSidebar ? "hidden" : ""}
+        `}
         style={{ minHeight: 56, boxShadow: "0 2px 16px 0 rgba(0,0,0,0.10)" }}
       >
         <button
@@ -78,7 +88,9 @@ const MobileSidebar: React.FC = () => {
       <div
         className={`fixed top-0 left-0 h-full w-64 ${sidebarBg} shadow-lg z-40 transform ${
           open ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 md:hidden`}
+        } transition-transform duration-300 md:hidden
+          ${hideSidebar ? "hidden" : ""}
+        `}
         style={{ willChange: "transform" }}
       >
         <div className="flex flex-col h-full">
