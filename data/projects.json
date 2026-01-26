@@ -38,7 +38,8 @@
     "title": "Railway eTicket Booking system",
     "description": "Railway Reservation System with real-time booking, email notifications and automated data backup with cron jobs",
     "link": "https://github.com/kanishkumar-k/eRailway-serv",
-    "type": "backend"
+    "type": "backend",
+    "image": "/images/railway_eticket_booking_system.png"
   },
   {
     "title": "CMS website for a charity",
