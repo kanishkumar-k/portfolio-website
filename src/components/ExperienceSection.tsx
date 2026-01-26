@@ -14,6 +14,8 @@ const ExperienceSection: React.FC = () => {
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const { theme } = useTheme();
   const [active, setActive] = useState(false);
+  const [sortMenuOpen, setSortMenuOpen] = useState(false);
+  const [sortType, setSortType] = useState<"year-desc" | "year-asc" | "company-asc" | "company-desc">("year-desc");
 
   useEffect(() => {
     fetch("/api/experience")
@@ -32,6 +34,35 @@ const ExperienceSection: React.FC = () => {
       });
   }, []);
 
+  // Helper to parse start year for sorting
+  const getStartYear = (exp: Experience) => {
+    if (!exp.period) return 0;
+    const match = exp.period.match(/(\d{4})/);
+    return match ? parseInt(match[1], 10) : 0;
+  };
+
+  // Sorting logic
+  const sortedExperiences = [...experiences].sort((a, b) => {
+    if (sortType === "year-desc") {
+      return getStartYear(b) - getStartYear(a);
+    }
+    if (sortType === "year-asc") {
+      return getStartYear(a) - getStartYear(b);
+    }
+    if (sortType === "company-asc") {
+      return a.company.localeCompare(b.company);
+    }
+    if (sortType === "company-desc") {
+      return b.company.localeCompare(a.company);
+    }
+    return 0;
+  });
+
+  const handleSort = (type: "year-desc" | "year-asc" | "company-asc" | "company-desc") => {
+    setSortType(type);
+    setSortMenuOpen(false);
+  };
+
   return (
     <section
       id="experience"
@@ -48,12 +79,57 @@ const ExperienceSection: React.FC = () => {
         onFocus={() => setActive(true)}
         onBlur={() => setActive(false)}
       >
-        <h2
-          className={`text-3xl font-bold mb-4 text-center font-['JetBrains_Mono',monospace] underline underline-offset-8 section-title-variant${active ? " section-title-active" : ""}`}
-          style={{ color: theme === "light" ? "#111" : "var(--foreground)" }}
-        >
-          Experience
-        </h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2
+            className={`text-3xl font-bold text-center font-['JetBrains_Mono',monospace] underline underline-offset-8 section-title-variant${active ? " section-title-active" : ""}`}
+            style={{ color: theme === "light" ? "#111" : "var(--foreground)" }}
+          >
+            Experience
+          </h2>
+          {/* Sort Icon and Dropdown */}
+          <div className="relative ml-4">
+            <button
+              className="flex items-center px-2 py-1 rounded hover:bg-white/20 transition"
+              onClick={() => setSortMenuOpen((open) => !open)}
+              aria-label="Sort experience"
+              type="button"
+            >
+              {/* Simple sort icon SVG */}
+              <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+                <path d="M6 8h8M8 12h4M10 16h0M4 4h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+              <span className="ml-1 text-xs font-mono">Sort</span>
+            </button>
+            {sortMenuOpen && (
+              <div className="absolute right-0 mt-2 w-44 bg-white/90 text-black rounded shadow z-20">
+                <button
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-200 text-sm"
+                  onClick={() => handleSort("year-desc")}
+                >
+                  Year: Newest First
+                </button>
+                <button
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-200 text-sm"
+                  onClick={() => handleSort("year-asc")}
+                >
+                  Year: Oldest First
+                </button>
+                <button
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-200 text-sm"
+                  onClick={() => handleSort("company-asc")}
+                >
+                  Company: A-Z
+                </button>
+                <button
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-200 text-sm"
+                  onClick={() => handleSort("company-desc")}
+                >
+                  Company: Z-A
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
         {experiences.length === 0 ? (
           <div
             className="text-center"
@@ -63,7 +139,7 @@ const ExperienceSection: React.FC = () => {
           </div>
         ) : (
           <ul className="space-y-8">
-            {experiences.map((exp, idx) => (
+            {sortedExperiences.map((exp, idx) => (
               <motion.li
                 key={exp.role + exp.company}
                 className="bg-white/10 rounded-lg shadow p-6 border border-white/10"
