@@ -51,6 +51,7 @@
     "title": "Simple Restaurant theme application",
     "description": "UI focused Restaurant theme application with simple localStorage Sign In",
     "link": "https://fdfoods.netlify.app/",
-    "type": "ui"
+    "type": "ui",
+    "image": "/images/simple_restaurant_theme_application.png"
   }
 ]
