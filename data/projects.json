@@ -1,9 +1,14 @@
 [
   {
     "title": "AI powered FastAPI application builder",
-    "description": "FastAPI application builder using langGraph and real-time node monitoring with langSmith",
+    "description": "Turn SRS to a FastAPI application in minutes using langGraph agentic workflow and real-time node monitoring with langSmith",
     "link": "https://github.com/kanishkumar-k/langgraph-fastapi-project-builder",
     "image": "/images/ai_powered_fastapi_application_builder.png",
     "type": "ai/ml"
+  },
+  {
+    "title": "",
+    "description": "",
+    "link": ""
   }
 ]
