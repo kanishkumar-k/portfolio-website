@@ -24,7 +24,7 @@
     "title": "Personal portfolio with a Headless CMS approach",
     "description": "Portfolio site with headless CMS style configuration and AI enabled email drafter",
     "link": "https://kanishkumar-k.vercel.app/",
-    "type": "ai/ml",
+    "type": "ui",
     "image": "/images/personal_portfolio_with_a_headless_cms_approach.png"
   },
   {
@@ -39,5 +39,11 @@
     "description": "Railway Reservation System with real-time booking, email notifications and automated data backup with cron jobs",
     "link": "https://github.com/kanishkumar-k/eRailway-serv",
     "type": "backend"
+  },
+  {
+    "title": "Website",
+    "description": "",
+    "link": "",
+    "type": "freelance"
   }
 ]
