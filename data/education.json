@@ -1,16 +1,24 @@
 [
   {
-    "type": "College",
-    "name": "College Name",
-    "degree": "Your Degree Name",
+    "type":"College",
+    "name": "Loyola ICAM College Of Engineering and Technology",
+    "degree": "Bachelors Of Engineering - CS",
     "year": "2020 -2024",
-    "cgpa": "9.2/10"
+    "cgpa": "9"
   },
   {
     "type": "School",
-    "name": "School Name",
-    "degree": "High School",
+    "name": "Santhome Higher Secondary School",
+    "degree": "Higher Secondary",
     "year": "2018 - 2020",
-    "percentage": "95%"
-  }
+    "percentage": "92%"
+  },
+    {
+    "type": "School",
+    "name": "Santhome Higher Secondary School",
+    "degree":"SSLC",
+    "year": "2017 - 2018",
+    "percentage": "97.4%"
+    }
 ]
+
