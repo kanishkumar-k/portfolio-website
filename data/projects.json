@@ -12,5 +12,11 @@
     "link": "https://github.com/kanishkumar-k/twitter-clone-with-proactive-cyberbullying-detection",
     "image": "/images/project.png",
     "type": "ai/ml"
+  },
+  {
+    "title": "College Management LMS system",
+    "description": "Django REST framework and React based LMS for student and faculty to track their subjects and grades",
+    "link": "https://college-management-system-frontend.vercel.app/",
+    "type": "full stack"
   }
 ]
