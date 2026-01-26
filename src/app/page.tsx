@@ -1,5 +1,6 @@
 import HomeSection from "../components/HomeSection";
 import AboutSection from "../components/AboutSection";
+import EducationSection from "../components/EducationSection";
 import SkillsSection from "../components/SkillsSection";
 import ExperienceSection from "../components/ExperienceSection";
 import ProjectsSection from "../components/ProjectsSection";
@@ -20,6 +21,8 @@ export default function Home() {
       <SectionSeparator color="#2a2d34" />
       <AboutSection />
       <SectionSeparator color="#353942" flip />
+      <EducationSection />
+      <SectionSeparator color="#23272f" />
       <SkillsSection />
       <SectionSeparator color="#23272f" />
       <ExperienceSection />
