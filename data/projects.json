@@ -7,8 +7,10 @@
     "type": "ai/ml"
   },
   {
-    "title": "",
-    "description": "",
-    "link": ""
+    "title": "Multi model Cyberbullying detection and prevention system",
+    "description": "Random Forest and BERT based multi model cyberbullying detection and prevention system in a twitter clone application",
+    "link": "https://github.com/kanishkumar-k/twitter-clone-with-proactive-cyberbullying-detection",
+    "image": "/images/project.png",
+    "type": "ai/ml"
   }
 ]
