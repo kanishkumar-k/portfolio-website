@@ -1266,6 +1266,117 @@ setTempData({
                           <img src={proj.image} alt="Current" style={{ maxWidth: 120, borderRadius: 8, marginTop: 4 }} />
                         )}
                       </div>
+                      {/* Dynamic Button Types (architecture/algorithm) with image upload */}
+                      <div className="flex flex-col gap-2 w-full mt-2 p-2 border border-blue-200 rounded">
+                        <label className="font-semibold mb-1">Button Types (Architecture/Algorithm)</label>
+                        {(proj._buttonTypes || []).map((btn: any, btnIdx: number) => (
+                          <div key={btnIdx} className="flex flex-col md:flex-row md:items-center gap-2 mb-2 p-2 border border-gray-100 rounded">
+                            <select
+                              className="p-2 rounded bg-gray-100 border"
+                              value={btn.type}
+                              onChange={e => {
+                                const updated = [...(proj._buttonTypes || [])];
+                                updated[btnIdx].type = e.target.value;
+                                // Remove duplicate types
+                                const seen = new Set();
+                                const filtered = updated.filter(b => {
+                                  if (seen.has(b.type)) return false;
+                                  seen.add(b.type);
+                                  return true;
+                                });
+                                // Update the entire project object for _buttonTypes
+                                setTempData((prev: any) => {
+                                  const updatedProjects = prev.projects.map((p: any, i: number) =>
+                                    i === idx ? { ...p, _buttonTypes: filtered } : p
+                                  );
+                                  return { ...prev, projects: updatedProjects };
+                                });
+                              }}
+                            >
+                              <option value="">Select Type</option>
+                              <option value="architecture">Architecture</option>
+                              <option value="algorithm">Algorithm</option>
+                            </select>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="p-2 rounded bg-gray-100 border"
+                              onChange={async e => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                  // Upload image immediately
+                                  const formData = new FormData();
+                                  formData.append("image", file);
+                                  formData.append("title", proj.title || "project");
+                                  const res = await fetch("/api/projects/image", {
+                                    method: "POST",
+                                    body: formData,
+                                  });
+                                  const result = await res.json();
+                                  if (result.image) {
+                                    const updated = [...(proj._buttonTypes || [])];
+                                    updated[btnIdx].img = result.image;
+                                    setTempData((prev: any) => {
+                                      const updatedProjects = prev.projects.map((p: any, i: number) =>
+                                        i === idx ? { ...p, _buttonTypes: updated } : p
+                                      );
+                                      return { ...prev, projects: updatedProjects };
+                                    });
+                                    // Also update the main project object for saving
+                                    handleProjectChange(idx, btn.type, result.image);
+                                  }
+                                }
+                              }}
+                            />
+                            {btn.img && (
+                              <img src={btn.img} alt={btn.type} style={{ maxWidth: 80, borderRadius: 8, marginTop: 4 }} />
+                            )}
+                            <button
+                              className="bg-red-500 px-2 py-1 rounded text-white hover:bg-red-700"
+                              type="button"
+                              onClick={() => {
+                                const updated = (proj._buttonTypes || []).filter((_: any, i: number) => i !== btnIdx);
+                                handleProjectChange(idx, "_buttonTypes", updated);
+                                // Remove the key from the project object
+                                if (btn.type) {
+                                  const newProj = { ...proj };
+                                  delete newProj[btn.type];
+                                  newProj._buttonTypes = (proj._buttonTypes || []).filter((_: any, i: number) => i !== btnIdx);
+                                  setTempData((prev: any) => {
+                                    const updatedProjects = prev.projects.map((p: any, i: number) =>
+                                      i === idx ? newProj : p
+                                    );
+                                    return { ...prev, projects: updatedProjects };
+                                  });
+                                }
+                              }}
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        ))}
+                        <button
+                          className="bg-blue-500 px-3 py-1 rounded text-white hover:bg-blue-700 w-fit"
+                          type="button"
+                          onClick={() => {
+                            const current = proj._buttonTypes || [];
+                            // Only allow adding if not both present
+                            if (current.length < 2) {
+                              const types = current.map((b: any) => b.type);
+                              const nextType = !types.includes("architecture") ? "architecture" : "algorithm";
+                              setTempData((prev: any) => {
+                                const updatedProjects = prev.projects.map((p: any, i: number) =>
+                                  i === idx ? { ...p, _buttonTypes: [...current, { type: nextType, img: "" }] } : p
+                                );
+                                return { ...prev, projects: updatedProjects };
+                              });
+                            }
+                          }}
+                          disabled={!!(proj._buttonTypes && proj._buttonTypes.length >= 2)}
+                        >
+                          Add Button Type
+                        </button>
+                      </div>
                       <button className="bg-red-600 px-2 py-1 rounded text-white hover:bg-red-700" onClick={() => handleRemoveProject(idx)}>Remove</button>
                       <div className="flex gap-2 mt-2">
                         <button
