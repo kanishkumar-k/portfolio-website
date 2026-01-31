@@ -181,13 +181,13 @@ const ProjectsSection: React.FC = () => {
                   const buttons = [];
                   if (archImg) {
                     buttons.push({
-                      label: "architecture",
+                      label: "Architecture",
                       img: archImg,
                     });
                   }
                   if (algoImg) {
                     buttons.push({
-                      label: "algorithm",
+                      label: "Decision Logic",
                       img: algoImg,
                     });
                   }
@@ -273,3 +273,4 @@ const ProjectsSection: React.FC = () => {
 };
 
 export default ProjectsSection;
+
