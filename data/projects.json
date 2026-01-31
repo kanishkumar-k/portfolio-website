@@ -16,9 +16,14 @@
       {
         "type": "architecture",
         "img": "/images/multi_model_cyberbullying_detection_and_prevention_system.png"
+      },
+      {
+        "type": "algorithm",
+        "img": "/images/multi_model_cyberbullying_detection_and_prevention_system.png"
       }
     ],
-    "architecture": "/images/multi_model_cyberbullying_detection_and_prevention_system.png"
+    "architecture": "/images/multi_model_cyberbullying_detection_and_prevention_system.png",
+    "algorithm": "/images/multi_model_cyberbullying_detection_and_prevention_system.png"
   },
   {
     "title": "College Management LMS system",
